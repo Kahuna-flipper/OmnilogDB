@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .dtableforstrain{
+        margin-left:250px;
+        margin-right: 100px;
+        height:50px;
+    }
+    .dtprojectforstrain{
+        margin-left:250px;
+        margin-right: 100px;
+        height:50px;
+        padding-bottom: 250px;
+    }
+</style>
+{% endblock %}
+
+
+
+
+{% block body %}
+<br>
+<br>
+<br>
+
+<div class = "dtprojectforstrain">
+    <table id="project_id" class ="table table-hover">
+        <thead class="thead-light">        
+            <tr>
+                <th>Projects</th>
+                <th>Descriptions</th>
+            </tr>
+        </thead>
+    </table>
+    
+    </div>
+
+<br>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<div class = "dtableforstrain">
+<table id="table_id" class ="table table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>PlateIDs</th>
+            <th>Plate</th>
+            <th>Strain</th>
+            <th>Modification/Metadata</th>
+            <th>Specie</th>
+            <th>Project</th>
+            <th>POC</th>
+        </tr>
+    </thead>
+</table>
+
+</div>
+
+
+{% endblock %}
+
+{% block script%}
+<script>
+    $(document).ready(function() {
+        $('#table_id').DataTable( {
+            "ajax": '/strains/json',
+            "lengthChange": true,
+            "deferRender": true,
+            "info": true,
+            "lengthMenu": [[10, 50, 80, -1], [10, 50, 80, "All"]],
+        } );
+    } );
+
+    $(document).ready(function() {
+        $('#project_id').DataTable( {
+            "ajax": '/projects/json',
+        } );
+    } );
+</script>
+
+{%endblock%}
