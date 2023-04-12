@@ -43,8 +43,9 @@ def ecoli():
 
 @app.route('/strains/json', methods=['GET'])
 def strains_json():
-    print(request.args.get('name'))
-    strain_data = pd.read_csv('./static/ecoli/metadata/summary.csv')
+    print(request.args.get('strain'))
+    strain = request.args.get('strain')
+    strain_data = pd.read_csv('./static/'+strain+'/metadata/summary.csv')
 
     out2 = []
 
