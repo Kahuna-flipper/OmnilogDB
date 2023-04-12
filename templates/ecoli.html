@@ -13,6 +13,14 @@
         height:50px;
         padding-bottom: 250px;
     }
+
+    #project_id.dataTable tbody tr:hover {
+    background-color: white;
+    }
+
+    #table_id.dataTable tbody tr:hover {
+    background-color: lightgrey;
+    }
 </style>
 {% endblock %}
 
@@ -73,13 +81,19 @@
 {% block script%}
 <script>
     $(document).ready(function() {
-        $('#table_id').DataTable( {
-            "ajax": '/strains/json',
+        var table = $('#table_id').DataTable( {
+            //"ajax": '/strains/json',
+            "ajax":'/strains/json?strain={{"ecoli"}}',
             "lengthChange": true,
             "deferRender": true,
             "info": true,
             "lengthMenu": [[10, 50, 80, -1], [10, 50, 80, "All"]],
         } );
+
+        $('#table_id').on('click', 'tr', function() {
+            console.log('API row values : ', table.row(this).data());
+        
+        })
     } );
 
     $(document).ready(function() {
