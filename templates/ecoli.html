@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
+
 <style>
     .dtableforstrain{
         margin-left:250px;
@@ -83,7 +84,7 @@
     $(document).ready(function() {
         var table = $('#table_id').DataTable( {
             //"ajax": '/strains/json',
-            "ajax":'/strains/json?strain={{"ecoli"}}',
+            "ajax":'/strains/json?strain={{specie}}',
             "lengthChange": true,
             "deferRender": true,
             "info": true,
@@ -98,7 +99,7 @@
 
     $(document).ready(function() {
         $('#project_id').DataTable( {
-            "ajax": '/projects/json',
+            "ajax": '/projects/json?strain={{specie}}',
         } );
     } );
 </script>
