@@ -58,11 +58,11 @@
 <body>
     <div class="sidebar">
         <a id = "organisms-header"> Organisms</a>
-        <a id="a-dashboard" href="{{url_for('dashboard')}}" onclick="dodajAktywne(this)"><ul>Dashboard</ul></a>
-        <a id="a-ecoli" name = "ecoli" href="{{url_for('ecoli')}}" onclick="dodajAktywne(this)"><ul><i>E. Coli</ul></i></a>
-        <a id="a-aureus" href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul><i>S. Aureus</i></ul></a>
-        <a id="a-putida"  href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul><i>P. Putida</i></ul></a>
-        <a id="a-pyogenes"  href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul><i>S. Pyogenes</i></ul></a>
+        <a id="a-dashboard" href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul>Dashboard</ul></a>
+        <a id="a-ecoli" name = "ecoli" href="{{url_for('ecoli',specie='ecoli')}}" onclick="dodajAktywne(this)"><ul><i>E. Coli</ul></i></a>
+        <a id="a-aureus" href="{{url_for('ecoli',specie='saureus')}}" onclick="dodajAktywne(this)"><ul><i>S. Aureus</i></ul></a>
+        <a id="a-putida"  href="{{url_for('ecoli',specie='pputida')}}" onclick="dodajAktywne(this)"><ul><i>P. Putida</i></ul></a>
+    
       </div>    
 
       <nav class="navbar navbar-expand-sm navbar-light" style="background-color: whitesmoke;margin-left: 200px;">
