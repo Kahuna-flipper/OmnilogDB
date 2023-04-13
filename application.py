@@ -57,7 +57,7 @@ def strains_json():
         strain = strain_data.loc[i,'Strain']
         metadata = strain_data.loc[i,'Modification/Metadata']
         specie = strain_data.loc[i,'Specie']
-        project = strain_data.loc[i,'Project ']
+        project = strain_data.loc[i,'Project']
         poc = strain_data.loc[i,'POC']
 
         out2.append([
