@@ -29,21 +29,23 @@ app = Flask(__name__,template_folder='templates',static_url_path='/static')
 
 @app.route('/')
 def index():
-    return render_template('base.html')
+    return render_template('index.html')
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('index.html')
+    return render_template('base.html')
 
 
-@app.route('/ecoli')
+@app.route('/ecoli', methods=['GET'])
 def ecoli():
-    return render_template('ecoli.html')
+    specie = request.args.get('specie')
+    #print(specie)
+    #specie = 'ecoli'
+    return render_template('ecoli.html',specie=specie)
 
 
 @app.route('/strains/json', methods=['GET'])
 def strains_json():
-    print(request.args.get('strain'))
     strain = request.args.get('strain')
     strain_data = pd.read_csv('./static/'+strain+'/metadata/summary.csv')
 
@@ -73,7 +75,8 @@ def strains_json():
 
 @app.route('/projects/json', methods=['GET'])
 def projects():
-    project_data = pd.read_csv('./static/ecoli/metadata/project_summary.csv')
+    strain = request.args.get('strain')
+    project_data = pd.read_csv('./static/'+strain+'/metadata/project_summary.csv')
     out2 = []
 
     for i in project_data.index:
