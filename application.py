@@ -20,6 +20,7 @@ mongo_table= mydb[MONGO_CNX['collection']]
 data = mongo_table.find()
 from phenom_db import *
 import pandas as pd
+from scripts import scripts
 
 
 
@@ -33,15 +34,15 @@ def index():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('base.html')
+    return render_template('index.html')
 
 
-@app.route('/ecoli', methods=['GET'])
-def ecoli():
+@app.route('/species', methods=['GET'])
+def species():
     specie = request.args.get('specie')
     #print(specie)
     #specie = 'ecoli'
-    return render_template('ecoli.html',specie=specie)
+    return render_template('species.html',specie=specie)
 
 
 @app.route('/strains/json', methods=['GET'])
@@ -90,7 +91,28 @@ def projects():
 
     #return jsonify(data=out)
     return jsonify(data=out2)
+    
 
+@app.route('/dashboard/strains', methods=['GET'])
+def dashboard_strains():
+
+    total_strains = strain.strain_summary()
+    strain = request.args.get('strain')
+    strain_data = pd.read_csv('./static/'+strain+'/metadata/summary.csv')
+
+    out2 = []
+
+    for i in total_strains.index:
+        num_specie = total_strains.loc[i,'Num Strains']
+        specie = i
+
+        out2.append([
+            str(specie),
+            str(num_specie),])
+
+
+    #return jsonify(data=out)
+    return jsonify(data=out2)
 
 if __name__=="__main__":
     app.run(debug=True)
