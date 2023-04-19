@@ -20,7 +20,7 @@ mongo_table= mydb[MONGO_CNX['collection']]
 data = mongo_table.find()
 from phenom_db import *
 import pandas as pd
-from scripts import scripts
+import scripts
 
 
 
@@ -29,8 +29,22 @@ from scripts import scripts
 app = Flask(__name__,template_folder='templates',static_url_path='/static')
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/index')
+def index(chartID = 'container', chart_type = 'pie', chart_height = 200):
+
+    chart =  {"renderTo": chartID,"type": 'pie',"fontFamily":'Monospace'}
+    title = {"text": 'Total plates for each specie',"align": 'center',"fontFamily":'monospace'}
+    tooltip = {"headerFormat": '',"pointFormat": '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
+              'Strains : <b>{point.y}</b><br/>'+'Plates: <b>{point.z}</b><br/>'}
+    series2 = scripts.strain_summary_json()
+    series = [{
+        "minPointSize": 10,
+        "innerSize": '20%',
+        "zMin": 0,
+        "name": 'species',
+        "data" : series2,
+      }]
+    return render_template('index.html', chartID=chartID, chart=chart, series=series, title=title,tooltip=tooltip)
 
 @app.route('/dashboard')
 def dashboard():
