@@ -44,6 +44,23 @@ def strain_summary_json():
 
 
 def plate_summary():
+    concat_summary = pd.DataFrame()
+    for specie in species:
+        temp_summary = pd.read_csv('static/'+specie+'/metadata/summary.csv')
+        concat_summary = pd.concat([concat_summary,temp_summary])
+    plates = concat_summary['Plate'].unique()
 
+    total_plates = []
+
+    for plate in plates:
+        total_plates.append(concat_summary.loc[concat_summary['Plate']==plate].shape[0])
+
+    total_plates_used = pd.DataFrame(index=plates)
+
+    total_plates_used['num_plates'] = total_plates
+
+    return total_plates_used
+
+def plate_summary_json():
 
     return True
