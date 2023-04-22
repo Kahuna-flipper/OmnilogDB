@@ -30,9 +30,9 @@ app = Flask(__name__,template_folder='templates',static_url_path='/static')
 
 @app.route('/')
 @app.route('/index')
-def index(chartID = 'container', chart_type = 'pie', chart_height = 200):
+def index():
 
-    chart =  {"renderTo": chartID,"type": 'pie',"fontFamily":'Monospace'}
+    chart =  {"renderTo": 'container',"type": 'pie',"fontFamily":'Monospace'}
     title = {"text": 'Total plates for each specie',"align": 'center',"fontFamily":'monospace'}
     tooltip = {"headerFormat": '',"pointFormat": '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
               'Strains : <b>{point.y}</b><br/>'+'Plates: <b>{point.z}</b><br/>'}
@@ -44,7 +44,44 @@ def index(chartID = 'container', chart_type = 'pie', chart_height = 200):
         "name": 'species',
         "data" : series2,
       }]
-    return render_template('index.html', chartID=chartID, chart=chart, series=series, title=title,tooltip=tooltip)
+    
+
+    chart_bar = {"renderTo":'container2',"type": 'bar'}
+    title_bar = {"text": 'Number of plates',
+        "align": 'center'}
+    xAxis =  {"categories": ['Africa', 'America', 'Asia', 'Europe', 'Oceania']}
+    yAxis =  {"min": 0,"title": {"text": 'Population (millions)',
+            "align": 'high'},"labels": {"overflow": 'justify'}}
+    tooltip_bar= {
+        "valueSuffix": ' millions'}
+    plotOptions_bar= {
+        "bar": {
+            "dataLabels": {
+                "enabled": 'true'
+            }
+        }
+    }
+    legend_bar= {
+        "layout": 'vertical',
+        "align": 'right',
+        "verticalAlign": 'top',
+        "x": -40,
+        "y": 80,
+        "floating": 'true',
+        "borderWidth": 1,
+        "shadow":  'true'
+    }
+    credits_bar= {
+        "enabled": 'false'
+    }
+
+    
+    series_bar= [{"name": 'Year 1990',"data": [631, 727, 3202, 721, 26]}]
+    
+    return render_template('index.html', chartID='container', chart=chart, series=series,
+                            title=title,tooltip=tooltip,chart_bar=chart_bar,title_bar = title_bar,
+                            xAxis = xAxis,yAxis=yAxis,tooltip_bar=tooltip_bar,plotOptions_bar=plotOptions_bar,
+                            legend_bar = legend_bar,credits_bar = credits_bar,series_bar = series_bar)
 
 @app.route('/dashboard')
 def dashboard():
