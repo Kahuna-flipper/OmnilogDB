@@ -61,6 +61,8 @@ def plate_summary():
 
     return total_plates_used
 
-def plate_summary_json():
 
-    return True
+def plate_summary_json():
+    total_plates_used = plate_summary()
+
+    return total_plates_used
