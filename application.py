@@ -31,12 +31,13 @@ app = Flask(__name__,template_folder='templates',static_url_path='/static')
 @app.route('/')
 @app.route('/index')
 def index():
-
-    chart =  {"renderTo": 'container',"type": 'pie',"fontFamily":'Monospace'}
-    title = {"text": 'Total plates for each specie',"align": 'center',"fontFamily":'monospace'}
+   
+    chart =  {"renderTo": 'container',"type": 'pie'}
+    title = {"text": 'Total plates for each specie',"align": 'center'}
     tooltip = {"headerFormat": '',"pointFormat": '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
               'Strains : <b>{point.y}</b><br/>'+'Plates: <b>{point.z}</b><br/>'}
     series2 = scripts.strain_summary_json()
+    colors_pie =  ['#7987f2','#3f4675','#0520f0']
     series = [{
         "minPointSize": 10,
         "innerSize": '20%',
@@ -45,20 +46,22 @@ def index():
         "data" : series2,
       }]
     
-
+    plate_series = scripts.plate_summary()
     chart_bar = {"renderTo":'container2',"type": 'bar'}
     title_bar = {"text": 'Number of plates',
         "align": 'center'}
-    xAxis =  {"categories": ['Africa', 'America', 'Asia', 'Europe', 'Oceania']}
-    yAxis =  {"min": 0,"title": {"text": 'Population (millions)',
+    xAxis =  {"categories": plate_series.index.tolist()}
+    yAxis =  {"min": 0,"title": {"text": 'plates for all species',
             "align": 'high'},"labels": {"overflow": 'justify'}}
+    colors_bar = ['#615bcf']
     tooltip_bar= {
-        "valueSuffix": ' millions'}
+        "valueSuffix": ' samples'}
     plotOptions_bar= {
-        "bar": {
+        "bar": { "borderRadius": '50%',
             "dataLabels": {
                 "enabled": 'true'
-            }
+            },
+        "column":{"colorByPoint": 'true'}
         }
     }
     legend_bar= {
@@ -74,14 +77,12 @@ def index():
     credits_bar= {
         "enabled": 'false'
     }
+    series_bar= [{"name": 'Upto 2023',"data": plate_series['num_plates'].tolist()}]
 
-    
-    series_bar= [{"name": 'Year 1990',"data": [631, 727, 3202, 721, 26]}]
-    
     return render_template('index.html', chartID='container', chart=chart, series=series,
-                            title=title,tooltip=tooltip,chart_bar=chart_bar,title_bar = title_bar,
+                           title=title,tooltip=tooltip,colors_pie=colors_pie,chart_bar=chart_bar,title_bar = title_bar,
                             xAxis = xAxis,yAxis=yAxis,tooltip_bar=tooltip_bar,plotOptions_bar=plotOptions_bar,
-                            legend_bar = legend_bar,credits_bar = credits_bar,series_bar = series_bar)
+                            legend_bar = legend_bar,credits_bar = credits_bar,series_bar = series_bar,colors_bar=colors_bar)
 
 @app.route('/dashboard')
 def dashboard():
