@@ -97,6 +97,10 @@ def species():
     return render_template('species.html',specie=specie)
 
 
+@app.route('/straindata', methods=['GET'])
+def straindata():
+    return render_template('straindata.html')
+
 @app.route('/strains/json', methods=['GET'])
 def strains_json():
     strain = request.args.get('strain')
