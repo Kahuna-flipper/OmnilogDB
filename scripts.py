@@ -62,7 +62,6 @@ def plate_summary():
     return total_plates_used
 
 
-def plate_summary_json():
-    total_plates_used = plate_summary()
+def get_strain_data(plateid):
 
-    return total_plates_used
+    return True
