@@ -99,7 +99,42 @@ def species():
 
 @app.route('/straindata', methods=['GET'])
 def straindata():
-    return render_template('straindata.html')
+
+    growth_calls,well_char,well_id = scripts.get_strain_data('ECP7')
+    chart= {'type': 'heatmap','marginTop': 40,'marginBottom': 80,'plotBorderWidth': 1}
+    title= {'text': ''}
+    xAxis= {
+        'categories': well_id
+    }
+
+    yAxis= {
+        'categories': well_char,
+        'title': 'null',
+        'reversed': 'true'
+    }
+
+
+    legend= {
+        'align': 'right',
+        'layout': 'vertical',
+        'margin': 0,
+        'verticalAlign': 'top',
+        'y': 25,
+        'symbolHeight': 280
+    }
+
+    series= [{
+        'name': 'Growth(1)/No Growth(0)/Uncertain(0.5)',
+        'borderWidth': 1,
+        'data': growth_calls,
+        'dataLabels': {
+            'enabled': 'true',
+            'color': '#000000'
+        }
+    }]
+
+    return render_template('straindata.html',chartID='container', chart=chart, series=series,
+                           title=title,legend = legend,xAxis = xAxis,yAxis=yAxis)
 
 @app.route('/strains/json', methods=['GET'])
 def strains_json():
