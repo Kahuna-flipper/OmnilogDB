@@ -119,21 +119,22 @@ def straindata():
         'layout': 'vertical',
         'margin': 0,
         'verticalAlign': 'top',
-        'y': 25,
+        'y': 1,
         'symbolHeight': 280
     }
 
     series= [{
         'name': 'Growth(1)/No Growth(0)/Uncertain(0.5)',
-        'borderWidth': 1,
+        'borderWidth': 2.5,
+        'borderColor':'#0a000f',
         'data': growth_calls,
         'dataLabels': {
-            'enabled': 'true',
-            'color': '#000000'
+            'enabled': 'false',
+            'color': '#000000',
         }
     }]
 
-    return render_template('straindata.html',chartID='container', chart=chart, series=series,
+    return render_template('straindata.html',chartID='container', chart=chart, data=growth_calls,
                            title=title,legend = legend,xAxis = xAxis,yAxis=yAxis)
 
 @app.route('/strains/json', methods=['GET'])
