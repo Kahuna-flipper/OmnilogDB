@@ -137,6 +137,16 @@ def straindata():
     return render_template('straindata.html',chartID='container', chart=chart, data=growth_calls,
                            title=title,legend = legend,xAxis = xAxis,yAxis=yAxis)
 
+@app.route('/strain_kinetics/json', methods=['GET'])
+def strain_kinetics_json():
+    plateid = 'ECP7'
+    out2 = scripts.get_kinetic_parameters(plateid)
+    
+    return jsonify(data=out2)
+
+
+
+
 @app.route('/strains/json', methods=['GET'])
 def strains_json():
     strain = request.args.get('strain')
