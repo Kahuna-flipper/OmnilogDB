@@ -100,7 +100,7 @@ def species():
 @app.route('/straindata', methods=['GET'])
 def straindata():
 
-    growth_calls,well_char,well_id = scripts.get_strain_data('ECP7')
+    growth_calls,well_char,well_id,compound_dict = scripts.get_strain_data('ECP120')
     chart= {'type': 'heatmap','marginTop': 40,'marginBottom': 80,'plotBorderWidth': 1}
     title= {'text': ''}
     xAxis= {
@@ -135,11 +135,11 @@ def straindata():
     }]
 
     return render_template('straindata.html',chartID='container', chart=chart, data=growth_calls,
-                           title=title,legend = legend,xAxis = xAxis,yAxis=yAxis)
+                           title=title,legend = legend,xAxis = xAxis,yAxis=yAxis,compound_dict = compound_dict)
 
 @app.route('/strain_kinetics/json', methods=['GET'])
 def strain_kinetics_json():
-    plateid = 'ECP7'
+    plateid = 'ECP120'
     out2 = scripts.get_kinetic_parameters(plateid)
     
     return jsonify(data=out2)
