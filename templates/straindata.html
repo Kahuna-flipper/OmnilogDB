@@ -114,7 +114,7 @@
     var xAxis = {{ xAxis|safe}}
     var yAxis = {{ yAxis|safe}}
     var data = {{ data|safe}}
-
+    var compound_dict = {{ compound_dict|safe}}
 
 </script> 
 
@@ -135,6 +135,15 @@ function getPointCategoryName(point, dimension) {
         isY = dimension === 'y',
         axis = series[isY ? 'yAxis' : 'xAxis'];
     return axis.categories[point[isY ? 'y' : 'x']];
+}
+
+function getCompoundInWell(point,dimension){
+
+    well_char = getPointCategoryName(point, 'y')
+    well_id = getPointCategoryName(point, 'x')
+    well = well_char + well_id
+    compound = compound_dict[well]
+    return compound
 }
 
 Highcharts.chart('container',{
@@ -164,17 +173,19 @@ Highcharts.chart('container',{
         tooltip: {
                 formatter: function () {
                     if(this.point.value==1){
-                        return '<b>'+ getPointCategoryName(this.point, 'y')+'</b>'+getPointCategoryName(this.point, 'x')+'</b> Growth : Yes';
+                        return '<b>'+ getPointCategoryName(this.point, 'y')+'</b>'+'<b>'+getPointCategoryName(this.point, 'x')+'</b>'+': '+
+                        '<b>'+getCompoundInWell(this.point,'y')+'</b>'+'<b>'+', Growth: Yes'+'</b>';
+                        
                     }
                     else if(this.point.value==0){
-                        return '<b>'+ getPointCategoryName(this.point, 'y')+'</b>'+getPointCategoryName(this.point, 'x')+'</b> Growth : No';
+                        return '<b>'+ getPointCategoryName(this.point, 'y')+'</b>'+'<b>'+getPointCategoryName(this.point, 'x')+'</b>'+': '+
+                        '<b>'+getCompoundInWell(this.point,'y')+'</b>'+'<b>'+', Growth: No'+'</b>';
 
                     }
                     else{
-                        return '<b>'+ getPointCategoryName(this.point, 'y')+'</b>'+getPointCategoryName(this.point, 'x')+'</b> Growth : Uncertain';
+                        return '<b>'+ getPointCategoryName(this.point, 'y')+'</b>'+'<b>'+getPointCategoryName(this.point, 'x')+'</b>'+': '+
+                        '<b>'+getCompoundInWell(this.point,'y')+'</b>'+'<b>'+', Growth: Uncertain'+'</b>';;
                     }
-                    // return '<b>' + getPointCategoryName(this.point, 'x') + '</b> sold <br><b>' +
-                    //     this.point.value + '</b> items on <br><b>' + getPointCategoryName(this.point, 'y') + '</b>';
                 }
             },
 
