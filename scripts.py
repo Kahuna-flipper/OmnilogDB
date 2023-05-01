@@ -63,5 +63,62 @@ def plate_summary():
 
 
 def get_strain_data(plateid):
+    well_char = ['A','B','C','D','E','F','G','H']
+    well_num = ['01','02','03','04','05','06','07','08','09','10','11','12']
+    specie = 'ecoli'
+    growth_frame = pd.read_csv('static/'+specie+'/data/growth_summary.csv',index_col='PlateIDs')
+    growth_frame = growth_frame.loc[plateid]
+    growth_calls = np.array(growth_frame['Growth(1)/No Growth(0)/NA(0.5)'])
+    growth_data = []
+    growth_calls = growth_calls.reshape((8,12))
 
-    return True
+    compounds = growth_frame.iloc[:,3:5]
+    compound_dict = {}
+
+    for i in range (0,compounds.shape[0]):
+        compound_dict[compounds.iloc[i,0]] = compounds.iloc[i,1]
+
+    for i in range(0,12):
+        for j in range(0,8):
+            growth_data.append([i,j,growth_calls[j,i]])
+
+    return growth_data,well_char,well_num,compound_dict
+
+def get_kinetic_parameters(plateid):
+    specie = 'ecoli'
+    growth_frame = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv')
+    growth_frame = growth_frame.loc[growth_frame['PlateIDs']==plateid]
+
+    out2 = []
+
+    for i in growth_frame.index:
+        plateid = growth_frame.loc[i,'PlateIDs']
+        plate = growth_frame.loc[i,'Plate']
+        well = growth_frame.loc[i,'Well']
+        compound = growth_frame.loc[i,'Compound']
+        max_resp = round(growth_frame.loc[i,'Max Resp'],1)
+        max_resp_rate = round(growth_frame.loc[i,'Max Resp Rate'],1)
+        time = growth_frame.loc[i,'Time till max resp rate']
+        auc = round(growth_frame.loc[i,'AUC'],1)
+        z = round(growth_frame.loc[i,'Z-score'],1)
+        growth = growth_frame.loc[i,'Growth(1)/No Growth(0)']
+        kegg = growth_frame.loc[i,'KEGG ID']
+        cas = growth_frame.loc[i,'CAS ID']
+
+        out2.append([
+            str(plateid),
+            str(plate),
+            str(well),
+            str(compound),
+            str(max_resp),
+            str(max_resp_rate),
+            str(time),
+            str(auc),
+            str(z),
+            str(growth),
+            str(kegg),
+            str(cas)])
+
+
+    return out2
+    #return jsonify(data=out2)
