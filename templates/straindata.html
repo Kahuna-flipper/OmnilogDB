@@ -26,10 +26,9 @@
 
 
 #container {
-    float:left;
     height: 200px;
     margin-left: 210px;
-    margin-bottom:70px;
+    float:left;
 }
 
 .highcharts-figure,
@@ -83,9 +82,16 @@
 
 {% block body %}
 
-<div id="container" class="chart" style="height: 500px; width: 800px"></div>
+<div style="width:50px;margin-left: 450px;margin-top:50px;height:50px;float: left;background: #cb9be8;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 100px;;margin-top:50px;height:50px;float: left;background: #FFFFFF;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 100px;;margin-top:50px;height:50px;float: left;background: #cc819d;border:2px solid #000;"></div>
+<div style="margin-top:120px;margin-left: 450px;height:10px;position: sticky;">Growth</div>
+<div style="margin-left:590px;height:10px;position: sticky;margin-top: -10px;">No Growth</div>
+<div style="margin-left: 740px;height:10px;margin-top: -10px">Uncertain</div>
 
-<div class = "dprojectforstrain" style="margin-left: 210px;width:1600px;margin-top: 300px;">
+<div id="container" class="chart" style="height: 500px; width: 800px;margin-top: 10px;"></div>
+
+<div class = "dprojectforstrain" style="margin-left: 210px;width:1600px;margin-top:30pxpx;">
     <table id="table_id" class ="table table-hover">
         <thead class="thead-light">        
             <tr>
@@ -109,6 +115,7 @@
 
 <script>
     var chart_id = {{ chartID|safe}}
+    var legend = {{legend|safe}}
     var title = {{ title|safe}}
     var chart = {{ chart|safe}}
     var xAxis = {{ xAxis|safe}}
@@ -168,6 +175,8 @@ Highcharts.chart('container',{
                 minColor: '#FFFFFF',
                 maxColor : '#cb9be8',
                 // maxColor: Highcharts.getOptions().colors[0]
+                showInLegend:false,
+
             },
 
         tooltip: {
@@ -205,7 +214,8 @@ Highcharts.chart('container',{
         dataLabels: {
             enabled: false,
             color: '#000000'
-        }
+        },
+        showInLegend:false
     }],
 
         responsive: {
