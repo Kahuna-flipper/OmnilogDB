@@ -104,17 +104,20 @@ def straindata():
     chart= {'type': 'heatmap','marginTop': 40,'marginBottom': 80,'plotBorderWidth': 1}
     title= {'text': ''}
     xAxis= {
-        'categories': well_id
+        'categories': well_id,
+        'labels':{'style':{'fontWeight':'bold','fontSize':'2em','fontFamily':'Monospace'}}
     }
 
     yAxis= {
         'categories': well_char,
         'title': 'null',
-        'reversed': 'true'
+        'reversed': 'true',
+        'labels':{'style':{'fontWeight':'bold','fontSize':'2em','fontFamily':'Monospace'}}
     }
 
 
     legend= {
+        'enabled':'false',
         'align': 'right',
         'layout': 'vertical',
         'margin': 0,
