@@ -31,6 +31,19 @@
     float:left;
 }
 
+#container2 {
+    height: 200px;
+    margin-left: 1100px;
+    float:left;
+    margin-top: -500px;
+}
+
+#wrapper {
+    /* width: 1500px; */
+    /* border: 1px solid black; */
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+
 .highcharts-figure,
 .highcharts-data-table table {
     min-width: 360px;
@@ -89,7 +102,11 @@
 <div style="margin-left:590px;height:10px;position: sticky;margin-top: -10px;">No Growth</div>
 <div style="margin-left: 740px;height:10px;margin-top: -10px">Uncertain</div>
 
-<div id="container" class="chart" style="height: 500px; width: 800px;margin-top: 10px;"></div>
+<div id = "wrapper">
+<div id="container" class="chart" style="height: 500px; width: 800px;margin-top: 10px;float: left"></div>
+<div id="container2" class="chart" style="height: 500px; width: 600px;float: left;"></div>
+</div>
+
 
 <div class = "dprojectforstrain" style="margin-left: 210px;width:1600px;margin-top:30pxpx;">
     <table id="table_id" class ="table table-hover">
@@ -199,12 +216,65 @@ Highcharts.chart('container',{
             },
 
         plotOptions: {
-        heatmap: {
-            dataLabels: {
-                enabled: false
+            series:{
+                point:{
+                    events:{
+                        click: function(){
+
+                            var well_dict = {0:"A",1:"B",2:"C",3:"D",4:"E",5:"F",6:"G",7:"H"};
+                            var well_char = well_dict[this.y];
+                            var well_id = this.x+1;
+                            if(well_id<10){
+                                well_id = "0"+well_id
+                            }
+                            var well = well_char+well_id;
+                            // Send AJAX request to FLASK backend
+                            $.ajax({
+                                type: "POST",
+                                url: "/get_growth_curves/json",
+                                data: {'well': well,'plateid':'ECP120'},
+                                success: function(response){
+                                    // Create a new chart with Flask backend
+                                    Highcharts.chart('container2',{
+
+                                        title: {
+                                            text: 'Respiration Curves',
+                                            align: 'center'
+                                        },
+
+                                        yAxis: {
+                                            title: {
+                                                text: 'Fluoroscence signal'
+                                            }
+                                        },
+                                        
+                                        xAxis:{categories:response.categories},
+                                        
+                                        series: response.data,
+
+                                        responsive: {
+                                            rules: [{
+                                                condition: {
+                                                    maxWidth: 500
+                                                },
+                                                chartOptions: {
+                                                    legend: {
+                                                        layout: 'horizontal',
+                                                        align: 'center',
+                                                        verticalAlign: 'bottom'
+                                                    }
+                                                }
+                                            }]
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    }
+                }
             }
-        }
-    },
+        },
+
 
     series: [{
         name: 'Growth(1)/No Growth(0)/Uncertain(0.5)',
@@ -234,7 +304,8 @@ Highcharts.chart('container',{
                 }
             }]
         }
-      });
+    });
+
 
 $(document).ready(function() {
         var table = $('#table_id').DataTable( {
