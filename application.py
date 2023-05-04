@@ -147,7 +147,12 @@ def strain_kinetics_json():
     
     return jsonify(data=out2)
 
-
+@app.route('/get_growth_curves/json',methods=['POST'])
+def get_growth_curves():
+    well = request.form['well']
+    plateid = request.form['plateid']
+    chart_data = scripts.get_growth_curves(well,plateid)
+    return jsonify(chart_data) 
 
 
 @app.route('/strains/json', methods=['GET'])
