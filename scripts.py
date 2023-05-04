@@ -122,3 +122,20 @@ def get_kinetic_parameters(plateid):
 
     return out2
     #return jsonify(data=out2)
+
+
+def get_growth_curves(well,plateid):
+    specie = 'ecoli'
+    growth_curves = pd.read_csv('static/'+specie+'/data/plate_summary.csv')
+    growth_curves = growth_curves.loc[growth_curves['PlateIDs']==plateid]
+    growth_curves = growth_curves.loc[growth_curves['Well']==well]
+    compound = growth_curves['Compound'].tolist()[0]
+    growth_data = []
+    for i in range(0,growth_curves.shape[0]):
+        temp_dict = {'name':compound,'data':growth_curves.iloc[i,8:].tolist()}
+        growth_data.append(temp_dict)
+    time_scale = list(np.arange(0,48.25,0.25))
+
+    chart_data = {'categories':time_scale,'data':growth_data}
+
+    return chart_data
