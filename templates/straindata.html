@@ -245,7 +245,9 @@ Highcharts.chart('container',{
                                         yAxis: {
                                             title: {
                                                 text: 'Fluoroscence signal'
-                                            }
+                                            },
+                                            min:0,
+                                            max:300
                                         },
                                         
                                         xAxis:{categories:response.categories},
