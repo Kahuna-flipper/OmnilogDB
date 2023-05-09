@@ -128,12 +128,38 @@ def get_growth_curves(well,plateid):
     specie = 'ecoli'
     growth_curves = pd.read_csv('static/'+specie+'/data/plate_summary.csv')
     growth_curves = growth_curves.loc[growth_curves['PlateIDs']==plateid]
-    growth_curves = growth_curves.loc[growth_curves['Well']==well]
-    compound = growth_curves['Compound'].tolist()[0]
+    main_growth_curves = growth_curves.loc[growth_curves['Well']==well]
+    compound = main_growth_curves['Compound'].tolist()[0]
+    plate = main_growth_curves['Plate'].tolist()[0]
     growth_data = []
-    for i in range(0,growth_curves.shape[0]):
-        temp_dict = {'name':compound,'data':growth_curves.iloc[i,8:].tolist()}
-        growth_data.append(temp_dict)
+    
+    if('PM11' in plate or 'PM12' in plate):
+        control_well = well[0]+'01'
+        control_growth_curves = growth_curves.loc[growth_curves['Well']==control_well]
+        control_compound = control_growth_curves['Compound'].tolist()[0]
+        for i in range(0,main_growth_curves.shape[0]):
+            temp_dict = {'name':compound+' R'+str(i),'data':main_growth_curves.iloc[i,8:].tolist()}
+            growth_data.append(temp_dict)
+        for i in range(0,control_growth_curves.shape[0]):
+            temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
+            growth_data.append(temp_dict)
+
+    if('PM01' in plate or 'PM02' in plate or 'PM03' in plate or 'PM04' in plate or 'PM05' in plate or 'PM06' in plate or 'PM07' in plate or 'PM08' in plate):
+        control_well = 'A01'
+        control_growth_curves = growth_curves.loc[growth_curves['Well']==control_well]
+        control_compound = control_growth_curves['Compound'].tolist()[0]
+        for i in range(0,main_growth_curves.shape[0]):
+            temp_dict = {'name':compound+' R'+str(i),'data':main_growth_curves.iloc[i,8:].tolist()}
+            growth_data.append(temp_dict)
+        for i in range(0,control_growth_curves.shape[0]):
+            temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
+            growth_data.append(temp_dict)
+
+    if('PM09' in plate or 'PM10' in plate):
+        for i in range(0,main_growth_curves.shape[0]):
+            temp_dict = {'name':compound+' R'+str(i),'data':main_growth_curves.iloc[i,8:].tolist()}
+            growth_data.append(temp_dict)
+
     time_scale = list(np.arange(0,48.25,0.25))
 
     chart_data = {'categories':time_scale,'data':growth_data}
