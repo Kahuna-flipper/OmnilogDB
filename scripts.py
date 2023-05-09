@@ -140,9 +140,10 @@ def get_growth_curves(well,plateid):
         for i in range(0,main_growth_curves.shape[0]):
             temp_dict = {'name':compound+' R'+str(i),'data':main_growth_curves.iloc[i,8:].tolist()}
             growth_data.append(temp_dict)
-        for i in range(0,control_growth_curves.shape[0]):
-            temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
-            growth_data.append(temp_dict)
+        if(well!=control_well):
+            for i in range(0,control_growth_curves.shape[0]):
+                temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
+                growth_data.append(temp_dict)
 
     if('PM01' in plate or 'PM02' in plate or 'PM03' in plate or 'PM04' in plate or 'PM05' in plate or 'PM06' in plate or 'PM07' in plate or 'PM08' in plate):
         control_well = 'A01'
@@ -151,9 +152,10 @@ def get_growth_curves(well,plateid):
         for i in range(0,main_growth_curves.shape[0]):
             temp_dict = {'name':compound+' R'+str(i),'data':main_growth_curves.iloc[i,8:].tolist()}
             growth_data.append(temp_dict)
-        for i in range(0,control_growth_curves.shape[0]):
-            temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
-            growth_data.append(temp_dict)
+        if(well!='A01'):
+            for i in range(0,control_growth_curves.shape[0]):
+                temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
+                growth_data.append(temp_dict)
 
     if('PM09' in plate or 'PM10' in plate):
         for i in range(0,main_growth_curves.shape[0]):
