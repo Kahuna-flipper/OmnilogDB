@@ -95,9 +95,11 @@
 
 {% block body %}
 
-<div style="width:50px;margin-left: 450px;margin-top:50px;height:50px;float: left;background: #cb9be8;border:2px solid #000;"></div>
-<div style="width:50px;margin-left: 100px;;margin-top:50px;height:50px;float: left;background: #FFFFFF;border:2px solid #000;"></div>
-<div style="width:50px;margin-left: 100px;;margin-top:50px;height:50px;float: left;background: #cc819d;border:2px solid #000;"></div>
+<h3 style="margin-left: 320px;margin-top: 50px;background-color: aliceblue;margin-right: 795px;font-family: monospace;">Click on a cell to plot respiration curves</h3>
+
+<div style="width:50px;margin-left: 450px;margin-top:10px;height:50px;float: left;background: #cb9be8;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 100px;;margin-top:10px;height:50px;float: left;background: #FFFFFF;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 100px;;margin-top:10px;height:50px;float: left;background: #cc819d;border:2px solid #000;"></div>
 <div style="margin-top:120px;margin-left: 450px;height:10px;position: sticky;">Growth</div>
 <div style="margin-left:590px;height:10px;position: sticky;margin-top: -10px;">No Growth</div>
 <div style="margin-left: 740px;height:10px;margin-top: -10px">Uncertain</div>
@@ -106,8 +108,9 @@
 <div id="container" class="chart" style="height: 500px; width: 800px;margin-top: 10px;float: left"></div>
 <div id="container2" class="chart" style="height: 500px; width: 600px;float: left;"></div>
 </div>
-
-
+<br>
+<br>
+<h3 style="margin-left: 810px;background-color: aliceblue;margin-right: 705px;font-family: monospace;">Kinetic Parameters</h3>
 <div class = "dprojectforstrain" style="margin-left: 210px;width:1600px;margin-top:30pxpx;">
     <table id="table_id" class ="table table-hover">
         <thead class="thead-light">        
@@ -170,8 +173,42 @@ function getCompoundInWell(point,dimension){
     return compound
 }
 
+// function animatePoint(point) {
+//   point.graphic.animate({ r: 100 }, { duration: 100000000, complete: function() {
+//       animatePoint(point); // recursively call the function to repeat the animation
+//     }});
+// }
+
+// $(document).ready(function() {
+    var table = $('#table_id').DataTable( {
+            "select": true,
+            //"ajax": '/strains/json',
+            "ajax":'/strain_kinetics/json',
+            "lengthChange": true,
+            "deferRender": true,
+            "info": true,
+            "lengthMenu": [[10, 50, 80, -1], [10, 50, 80, "All"]],
+        } );
+
+        $('#table_id').on('click', 'tr', function() {
+            console.log('API row values : ', table.row(this).data());
+        
+        })
+    // } );
+
 Highcharts.chart('container',{
-          chart: chart,
+        //   chart: chart,
+        chart: {type: 'heatmap',marginTop: 40,marginBottom: 80,plotBorderWidth: 1,
+                events:{
+                    click: function(event){
+                        var chart = this,
+                            point = chart.hoverPoint;
+                        if(point){
+                            point.graphic.attr({opacity:0.8});
+                        }
+
+                    }
+                }},
           title: title,
           xAxis: xAxis,
           yAxis: yAxis,
@@ -220,7 +257,7 @@ Highcharts.chart('container',{
                 point:{
                     events:{
                         click: function(){
-
+   
                             var well_dict = {0:"A",1:"B",2:"C",3:"D",4:"E",5:"F",6:"G",7:"H"};
                             var well_char = well_dict[this.y];
                             var well_id = this.x+1;
@@ -228,6 +265,9 @@ Highcharts.chart('container',{
                                 well_id = "0"+well_id
                             }
                             var well = well_char+well_id;
+                            table.search(well).draw();
+
+                        
                             // Send AJAX request to FLASK backend
                             $.ajax({
                                 type: "POST",
@@ -235,6 +275,7 @@ Highcharts.chart('container',{
                                 data: {'well': well,'plateid':'ECP120'},
                                 success: function(response){
                                     // Create a new chart with Flask backend
+                                   
                                     Highcharts.chart('container2',{
 
                                         title: {
@@ -273,6 +314,7 @@ Highcharts.chart('container',{
                             })
                         }
                     }
+
                 }
             }
         },
@@ -309,21 +351,21 @@ Highcharts.chart('container',{
     });
 
 
-$(document).ready(function() {
-        var table = $('#table_id').DataTable( {
-            //"ajax": '/strains/json',
-            "ajax":'/strain_kinetics/json',
-            "lengthChange": true,
-            "deferRender": true,
-            "info": true,
-            "lengthMenu": [[10, 50, 80, -1], [10, 50, 80, "All"]],
-        } );
+// // $(document).ready(function() {
+//         var table = $('#table_id').DataTable( {
+//             //"ajax": '/strains/json',
+//             "ajax":'/strain_kinetics/json',
+//             "lengthChange": true,
+//             "deferRender": true,
+//             "info": true,
+//             "lengthMenu": [[10, 50, 80, -1], [10, 50, 80, "All"]],
+//         } );
 
-        $('#table_id').on('click', 'tr', function() {
-            console.log('API row values : ', table.row(this).data());
+//         $('#table_id').on('click', 'tr', function() {
+//             console.log('API row values : ', table.row(this).data());
         
-        })
-    } );
+//         })
+//     // } );
 </script>
 
 {%endblock%}
