@@ -102,7 +102,7 @@ def species():
 def mainstraindata():
     plateid = request.args.get('pltid')
     specie = request.args.get('strn')
-    growth_calls,well_char,well_id,compound_dict = scripts.get_strain_data(plateid)
+    growth_calls,well_char,well_id,compound_dict = scripts.get_strain_data(plateid,specie)
     chart= {'type': 'heatmap','marginTop': 40,'marginBottom': 80,'plotBorderWidth': 1}
     title= {'text': ''}
     xAxis= {
@@ -218,7 +218,7 @@ def strains_json():
         poc = strain_data.loc[i,'POC']
 
         out2.append([
-            "<a href="+url_for('mainstraindata',pltid=str(plateid),strn=strain)+">"+str(plateid)+"</a>",
+            "<a href="+url_for('mainstraindata',pltid=str(plateid),strn=request.args.get('strain'))+">"+str(plateid)+"</a>",
             #str(plateid),
             str(plate),
             str(strain),
