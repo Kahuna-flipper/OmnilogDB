@@ -62,10 +62,9 @@ def plate_summary():
     return total_plates_used
 
 
-def get_strain_data(plateid):
+def get_strain_data(plateid,specie):
     well_char = ['A','B','C','D','E','F','G','H']
     well_num = ['01','02','03','04','05','06','07','08','09','10','11','12']
-    specie = 'ecoli'
     growth_frame = pd.read_csv('static/'+specie+'/data/growth_summary.csv',index_col='PlateIDs')
     growth_frame = growth_frame.loc[plateid]
     growth_calls = np.array(growth_frame['Growth(1)/No Growth(0)/NA(0.5)'])
