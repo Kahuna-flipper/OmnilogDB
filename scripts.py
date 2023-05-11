@@ -83,9 +83,8 @@ def get_strain_data(plateid,specie):
 
     return growth_data,well_char,well_num,compound_dict
 
-def get_kinetic_parameters(plateid):
-    specie = 'ecoli'
-    growth_frame = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv')
+def get_kinetic_parameters(plateid,strain):
+    growth_frame = pd.read_csv('static/'+strain+'/data/kinetic_summary.csv')
     growth_frame = growth_frame.loc[growth_frame['PlateIDs']==plateid]
 
     out2 = []
@@ -123,8 +122,7 @@ def get_kinetic_parameters(plateid):
     #return jsonify(data=out2)
 
 
-def get_growth_curves(well,plateid):
-    specie = 'ecoli'
+def get_growth_curves(well,plateid,specie):
     growth_curves = pd.read_csv('static/'+specie+'/data/plate_summary.csv')
     growth_curves = growth_curves.loc[growth_curves['PlateIDs']==plateid]
     main_growth_curves = growth_curves.loc[growth_curves['Well']==well]
@@ -133,7 +131,13 @@ def get_growth_curves(well,plateid):
     growth_data = []
     
     if('PM11' in plate or 'PM12' in plate):
-        control_well = well[0]+'01'
+        well_num = int(well[1:])
+        well_num = well_num - ((well_num%4)-1)
+        if(well_num<10):
+            well_char = '0'+str(well_num)
+        else:
+            well_char = str(well_num)
+        control_well = well[0]+well_char
         control_growth_curves = growth_curves.loc[growth_curves['Well']==control_well]
         control_compound = control_growth_curves['Compound'].tolist()[0]
         for i in range(0,main_growth_curves.shape[0]):
@@ -144,7 +148,7 @@ def get_growth_curves(well,plateid):
                 temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
                 growth_data.append(temp_dict)
 
-    if('PM01' in plate or 'PM02' in plate or 'PM03' in plate or 'PM04' in plate or 'PM05' in plate or 'PM06' in plate or 'PM07' in plate or 'PM08' in plate):
+    elif('PM01' in plate or 'PM02' in plate or 'PM03' in plate or 'PM04' in plate or 'PM05' in plate or 'PM06' in plate or 'PM07' in plate or 'PM08' in plate):
         control_well = 'A01'
         control_growth_curves = growth_curves.loc[growth_curves['Well']==control_well]
         control_compound = control_growth_curves['Compound'].tolist()[0]
@@ -156,7 +160,7 @@ def get_growth_curves(well,plateid):
                 temp_dict = {'name':control_compound+' R'+str(i),'data':control_growth_curves.iloc[i,8:].tolist()}
                 growth_data.append(temp_dict)
 
-    if('PM09' in plate or 'PM10' in plate):
+    elif('PM09' in plate or 'PM10' in plate):
         for i in range(0,main_growth_curves.shape[0]):
             temp_dict = {'name':compound+' R'+str(i),'data':main_growth_curves.iloc[i,8:].tolist()}
             growth_data.append(temp_dict)
