@@ -140,7 +140,7 @@ def mainstraindata():
     }]
 
     return render_template('mainstraindata.html',chartID='container', chart=chart, data=growth_calls,
-                           title=title,legend = legend,xAxis = xAxis,yAxis=yAxis,compound_dict = compound_dict)
+                           title=title,legend = legend,xAxis = xAxis,yAxis=yAxis,compound_dict = compound_dict,pltid=plateid,strn=specie)
 
 
 @app.route('/straindata', methods=['GET'])
@@ -188,8 +188,11 @@ def straindata():
 
 @app.route('/strain_kinetics/json', methods=['GET'])
 def strain_kinetics_json():
-    plateid = 'ECP120'
-    out2 = scripts.get_kinetic_parameters(plateid)
+    #plateid = 'ECP120'
+    #strain = request.args.get('strain')
+    strain = request.args.get('spec')
+    plateid = request.args.get('plate')
+    out2 = scripts.get_kinetic_parameters(plateid,strain)
     
     return jsonify(data=out2)
 
@@ -197,7 +200,8 @@ def strain_kinetics_json():
 def get_growth_curves():
     well = request.form['well']
     plateid = request.form['plateid']
-    chart_data = scripts.get_growth_curves(well,plateid)
+    specie = request.form['specie']
+    chart_data = scripts.get_growth_curves(well,plateid,specie)
     return jsonify(chart_data) 
 
 
