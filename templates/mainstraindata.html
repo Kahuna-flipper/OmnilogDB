@@ -173,17 +173,11 @@ function getCompoundInWell(point,dimension){
     return compound
 }
 
-// function animatePoint(point) {
-//   point.graphic.animate({ r: 100 }, { duration: 100000000, complete: function() {
-//       animatePoint(point); // recursively call the function to repeat the animation
-//     }});
-// }
 
-// $(document).ready(function() {
-    var table = $('#table_id').DataTable( {
+var table = $('#table_id').DataTable( {
             "select": true,
             //"ajax": '/strains/json',
-            "ajax":'/strain_kinetics/json',
+            "ajax":'/strain_kinetics/json?plate={{pltid}}&spec={{strn}}',
             "lengthChange": true,
             "deferRender": true,
             "info": true,
@@ -194,7 +188,6 @@ function getCompoundInWell(point,dimension){
             console.log('API row values : ', table.row(this).data());
         
         })
-    // } );
 
 Highcharts.chart('container',{
         //   chart: chart,
@@ -272,7 +265,7 @@ Highcharts.chart('container',{
                             $.ajax({
                                 type: "POST",
                                 url: "/get_growth_curves/json",
-                                data: {'well': well,'plateid':'ECP120'},
+                                data: {'well': well,'plateid':'{{pltid}}','specie':'{{strn}}'},
                                 success: function(response){
                                     // Create a new chart with Flask backend
                                    
@@ -288,7 +281,7 @@ Highcharts.chart('container',{
                                                 text: 'Fluoroscence signal'
                                             },
                                             min:0,
-                                            max:300
+                                            max:500
                                         },
                                         
                                         xAxis:{categories:response.categories},
