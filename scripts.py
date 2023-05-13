@@ -170,3 +170,25 @@ def get_growth_curves(well,plateid,specie):
     chart_data = {'categories':time_scale,'data':growth_data}
 
     return chart_data
+
+
+
+
+def get_control_well_distribution(specie):
+
+    kinetic_data = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv',index_col='PlateID')
+    growth = kinetic_data.loc[kinetic_data['Growth(1)/No Growth(0)']==1]
+    no_growth = kinetic_data.loc[kinetic_data['Growth(1)/No Growth(0)']==0]
+
+    growth_max_resp = growth.loc['Max Resp']
+    growth_max_resp_rate = growth.loc['Max Resp Rate']
+    growth_max_time = growth.loc['Time till max resp rate']
+    growth_max_auc = growth.loc['AUC']
+
+
+    no_growth_max_resp = growth.loc['Max Resp']
+    no_growth_max_resp_rate = growth.loc['Max Resp Rate']
+    no_growth_max_time = growth.loc['Time till max resp rate']
+    no_growth_max_auc = growth.loc['AUC']
+
+    return growth_max_resp,growth_max_resp_rate,growth_max_time,growth_max_auc,no_growth_max_resp,no_growth_max_resp_rate,no_growth_max_time,no_growth_max_auc
