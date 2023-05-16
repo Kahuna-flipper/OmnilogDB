@@ -176,19 +176,23 @@ def get_growth_curves(well,plateid,specie):
 
 def get_control_well_distribution(specie):
 
-    kinetic_data = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv',index_col='PlateID')
+    kinetic_data = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv',index_col='PlateIDs')
     growth = kinetic_data.loc[kinetic_data['Growth(1)/No Growth(0)']==1]
     no_growth = kinetic_data.loc[kinetic_data['Growth(1)/No Growth(0)']==0]
+    uncertain_growth = kinetic_data.loc[kinetic_data['Growth(1)/No Growth(0)']==0.5]
 
-    growth_max_resp = growth.loc['Max Resp']
-    growth_max_resp_rate = growth.loc['Max Resp Rate']
-    growth_max_time = growth.loc['Time till max resp rate']
-    growth_max_auc = growth.loc['AUC']
+    growth_max_resp = growth['Max Resp'].tolist()
+    growth_max_resp_rate = growth['Max Resp Rate'].tolist()
+    growth_max_time = growth['Time till max resp rate'].tolist()
+    growth_max_auc = growth['AUC'].tolist()
 
 
-    no_growth_max_resp = growth.loc['Max Resp']
-    no_growth_max_resp_rate = growth.loc['Max Resp Rate']
-    no_growth_max_time = growth.loc['Time till max resp rate']
-    no_growth_max_auc = growth.loc['AUC']
+    no_growth_max_resp = no_growth['Max Resp'].tolist()
+    no_growth_max_resp_rate = no_growth['Max Resp Rate'].tolist()
+    no_growth_max_time = no_growth['Time till max resp rate'].tolist()
+    no_growth_max_auc = no_growth['AUC'].tolist()
 
-    return growth_max_resp,growth_max_resp_rate,growth_max_time,growth_max_auc,no_growth_max_resp,no_growth_max_resp_rate,no_growth_max_time,no_growth_max_auc
+
+    uncertain_growth_max_resp = uncertain_growth['Max Resp'].tolist()
+
+    return growth_max_resp,growth_max_resp_rate,growth_max_time,growth_max_auc,no_growth_max_resp,no_growth_max_resp_rate,no_growth_max_time,no_growth_max_auc,uncertain_growth_max_resp
