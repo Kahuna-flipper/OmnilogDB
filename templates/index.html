@@ -183,11 +183,12 @@
 </style>
 <body>
     <div class="sidebar">
+      <!-- <a class ='active' id="a-dashboard" href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul>Dashboard</ul></a> -->
         <a id = "organisms-header"> Organisms</a>
-        <a class ='active' id="a-dashboard" href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul>Dashboard</ul></a>
-        <a id="a-ecoli" href="{{url_for('species',specie='ecoli')}}" onclick="dodajAktywne(this)"><ul><i>E. Coli</ul></i></a>
-        <a id="a-aureus" href="{{url_for('species',specie='saureus')}}" onclick="dodajAktywne(this)"><ul><i>S. Aureus</i></ul></a>
-        <a id="a-putida" href="{{url_for('species',specie='pputida')}}" onclick="dodajAktywne(this)"><ul><i>P. Putida</i></ul></a>
+        <!-- <a class ='active' id="a-dashboard" href="{{url_for('index')}}" onclick="dodajAktywne(this)"><ul>Dashboard</ul></a> -->
+        <a id="a-ecoli" href="{{url_for('species',specie='ecoli')}}" onclick="dodajAktywne(this)"><ul>E. coli</ul></a>
+        <a id="a-aureus" href="{{url_for('species',specie='saureus')}}" onclick="dodajAktywne(this)"><ul>S. aureus</ul></a>
+        <a id="a-putida" href="{{url_for('species',specie='pputida')}}" onclick="dodajAktywne(this)"><ul>P. putida</ul></a>
       
       </div>
 
