@@ -32,12 +32,12 @@ app = Flask(__name__,template_folder='templates',static_url_path='/static')
 @app.route('/index')
 def index():
    
-    chart =  {"renderTo": 'container',"type": 'pie'}
+    chart =  {"renderTo": 'container',"type": 'pie',"credits": {'enabled': 'false'}}
     title = {"text": 'Total plates for each specie',"align": 'center'}
     tooltip = {"headerFormat": '',"pointFormat": '<span style="color:{point.color}">\u25CF</span> <b> {point.name}</b><br/>' +
               'Strains : <b>{point.y}</b><br/>'+'Plates: <b>{point.z}</b><br/>'}
     series2 = scripts.strain_summary_json()
-    colors_pie =  ['#7987f2','#3f4675','#0520f0']
+    colors_pie =  ['#244782','#0452d9','#82aefa']
     series = [{
         "minPointSize": 10,
         "innerSize": '20%',
@@ -47,17 +47,17 @@ def index():
       }]
     
     plate_series = scripts.plate_summary()
-    chart_bar = {"renderTo":'container2',"type": 'bar'}
+    chart_bar = {"renderTo":'container2',"type": 'bar',"credits": {'enabled': 'false'}}
     title_bar = {"text": 'Number of plates',
         "align": 'center'}
     xAxis =  {"categories": plate_series.index.tolist()}
-    yAxis =  {"min": 0,"title": {"text": 'plates for all species',
+    yAxis =  {"min": 0,"title": {"text": '',
             "align": 'high'},"labels": {"overflow": 'justify'}}
-    colors_bar = ['#615bcf']
+    colors_bar = ['#5993f7']
     tooltip_bar= {
         "valueSuffix": ' samples'}
     plotOptions_bar= {
-        "bar": { "borderRadius": '50%',
+        "bar": { "borderRadius": '0%',
             "dataLabels": {
                 "enabled": 'true'
             },
@@ -100,7 +100,6 @@ def species():
     #print(specie)
     #specie = 'ecoli'
     return render_template('species.html',specie=specie,gmax_resp=growth_max_resp,ngmax_resp=no_growth_max_resp,ug_max_resp=uncertain_growth_max_resp)
-
 
 
 @app.route('/mainstraindata', methods=['GET'])
