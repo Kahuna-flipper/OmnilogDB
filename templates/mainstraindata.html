@@ -86,6 +86,10 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+.highcharts-credits {
+display: none !important;
+}
 </style>
 
 {% endblock %}
@@ -95,11 +99,11 @@
 
 {% block body %}
 
-<h3 style="margin-left: 300px;margin-top: 50px;text-decoration: underline;margin-right: 795px;font-family: monospace;">Click on a cell to plot respiration curves</h3>
+<!-- <h8 style="margin-left: 300px;margin-top: 50px;margin-right: 795px;font-family: monospace;">Click on a cell to plot respiration curves</h3> -->
 
-<div style="width:50px;margin-left: 450px;margin-top:10px;height:50px;float: left;background: #cb9be8;border:2px solid #000;"></div>
-<div style="width:50px;margin-left: 100px;;margin-top:10px;height:50px;float: left;background: #FFFFFF;border:2px solid #000;"></div>
-<div style="width:50px;margin-left: 100px;;margin-top:10px;height:50px;float: left;background: #cc819d;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 450px;margin-top:30px;height:50px;float: left;background: #f2b6ee;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 100px;;margin-top:30px;height:50px;float: left;background: #FFFFFF;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 100px;;margin-top:30px;height:50px;float: left;background: #b6daf2;border:2px solid #000;"></div>
 <div style="margin-top:120px;margin-left: 450px;height:10px;position: sticky;">Growth</div>
 <div style="margin-left:590px;height:10px;position: sticky;margin-top: -10px;">No Growth</div>
 <div style="margin-left: 740px;height:10px;margin-top: -10px">Uncertain</div>
@@ -108,12 +112,15 @@
 <div id="container" class="chart" style="height: 500px; width: 800px;margin-top: 10px;float: left"></div>
 <div id="container2" class="chart" style="height: 500px; width: 600px;float: left;"></div>
 </div>
+
+<h8 style="margin-left: 400px;margin-top: -20px;margin-right: 500px;font-family: monospace;">Click on a well to plot respiration curves</h3>
 <br>
 <br>
-<h3 style="margin-left: 810px;text-decoration: underline;margin-right: 705px;font-family: monospace;">Kinetic Parameters</h3>
+<br>
+<h5 style="margin-left: 810px;margin-right: 705px;font-family: monospace;">Kinetic Parameters</h3>
 <div class = "dprojectforstrain" style="margin-left: 210px;width:1600px;margin-top:30pxpx;">
     <table id="table_id" class ="table table-hover">
-        <thead class="thead-light">        
+        <thead style="background-color: rgb(203, 208, 230);">        
             <tr>
                 <th>PlateID</th>
                 <th>Plate</th>
@@ -218,9 +225,9 @@ Highcharts.chart('container',{
             },
         colorAxis: {
                 min: 0,
-                stops:[[0,'#FFFFFF'],[0.5,'#cc819d'],[1,'#cb9be8']],
+                stops:[[0,'#FFFFFF'],[0.5,'#b6daf2'],[1,'#f2b6ee']],
                 minColor: '#FFFFFF',
-                maxColor : '#cb9be8',
+                maxColor : '#f2b6ee',
                 // maxColor: Highcharts.getOptions().colors[0]
                 showInLegend:false,
 
