@@ -20,8 +20,8 @@
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: grey;
-  color:white;
+  background-color: whitesmoke;
+  color:black;
   position: fixed;
   height: 100%;
   overflow: auto;
@@ -52,14 +52,14 @@
 /* Sidebar links */
 .sidebar a {
   display: block;
-  color: whitesmoke;
+  color: black;
   padding: 16px;
   text-decoration: none;
 }
 
 /* Active/current link */
 .sidebar a.active {
-  background-color: green;
+  background-color: black;
   color: whitesmoke;
 }
 
@@ -90,7 +90,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: rgb(230, 229, 229);
+  background-color: white;
   color: black;
   text-align: left;
   font-family: monospace;
@@ -159,6 +159,9 @@
     background: #f1f7ff;
 }
 
+.highcharts-credits {
+display: none !important;
+}
 
 
 
@@ -192,12 +195,13 @@
       
       </div>
 
-      <div class="jumbotron">
-        <h1 class="display-4">Welcome to OmnilogDB!</h1>
+      <div class="jumbotron" style="background-color: white;">
+        <h1 class="display-4" style="background-color: white;">Welcome to OmnilogDB!</h1>
         <p class="lead">A database for bacterial phenotypes.</p>
         <hr class="my-4">
         <a class = "lead" href="{{url_for('straindata')}}" style="float:left">About</a>
-        <a class = "lead" style="float:right"> Contact</a>
+        <a class = "lead" href="{{url_for('straindata')}}" style="float:left;margin-left: 35px">Search</a>
+        <a class = "lead" style="float:left;margin-left: 35px;"> Contact</a>
       </div>
 
 
