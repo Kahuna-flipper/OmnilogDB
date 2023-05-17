@@ -75,6 +75,10 @@
         background: #f1f7ff;
     }
 
+    .highcharts-credits {
+display: none !important;
+}
+
 </style>
 {% endblock %}
 
@@ -96,7 +100,7 @@
 <br> -->
 <div class = "dtprojectforstrain">
     <table id="project_id" class ="table table-hover">
-        <thead class="thead-light">        
+        <thead style="background-color: rgb(203, 208, 230);">        
             <tr>
                 <th>Projects</th>
                 <th>Descriptions</th>
@@ -111,7 +115,7 @@
 
 <div class = "dtableforstrain">
 <table id="table_id" class ="table table-hover">
-    <thead class="thead-light">
+    <thead  style="background-color: rgb(203, 208, 230);">
         <tr>
             <th>PlateIDs</th>
             <th>Plate</th>
@@ -138,6 +142,13 @@
 
 </script> 
 <script>
+
+
+    var data = {{ gmax_resp|safe}}
+    var data2 = {{ngmax_resp|safe}}
+    var data3 = {{ug_max_resp|safe}}
+
+    
     $(document).ready(function() {
         var table = $('#table_id').DataTable( {
             //"ajax": '/strains/json',
@@ -205,7 +216,8 @@ Highcharts.chart('container', {
         xAxis: 1,
         yAxis: 1,
         baseSeries: 's1',
-        zIndex: -1
+        zIndex: -1,
+        color:'red'
     }, {
         name: 'Growth',
         type: 'scatter',
@@ -213,14 +225,17 @@ Highcharts.chart('container', {
         id: 's1',
         marker: {
             radius: 1.5
-        }},
+        },
+        color:'red'},
+        
     {
         name: 'No Growth Max Respiration',
         type: 'histogram',
         xAxis: 1,
         yAxis: 1,
         baseSeries: 's2',
-        zIndex: -1
+        zIndex: -1,
+        color:'darkblue'
     },
     {
         name: 'No Growth',
@@ -229,7 +244,8 @@ Highcharts.chart('container', {
         id: 's2',
         marker: {
             radius: 1.5
-        }
+        },
+        color:'darkblue'
 
     },
     // {
