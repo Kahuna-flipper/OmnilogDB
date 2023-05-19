@@ -196,3 +196,17 @@ def get_control_well_distribution(specie):
     uncertain_growth_max_resp = uncertain_growth['Max Resp'].tolist()
 
     return growth_max_resp,growth_max_resp_rate,growth_max_time,growth_max_auc,no_growth_max_resp,no_growth_max_resp_rate,no_growth_max_time,no_growth_max_auc,uncertain_growth_max_resp
+
+
+
+
+def get_control_well_dist(specie):
+    kinetic_data = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv',index_col='PlateIDs')
+    control_wells = kinetic_data.loc[kinetic_data['Well']=='A01']
+    control_data = []
+    for well in range(0,control_wells.shape[0]):
+        plate = control_wells.iloc[well,0]
+        if('PM01' in plate or 'PM02' in plate or 'PM03' in plate or 'PM04' in plate or 'PM05' in plate or 'PM06' in plate or 'PM07' in plate or 'PM08' in plate):
+            control_data.append(control_wells.iloc[well,5])
+
+    return control_data
