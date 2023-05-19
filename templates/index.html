@@ -25,20 +25,20 @@
   position: fixed;
   height: 100%;
   overflow: auto;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #organisms-header{
     font-size: 25px;
     font-style: normal;
-    font-family: monospace;
+    font-family: arial;
     pointer-events: none;
 }
 
 
 .jumbotron{
   margin-left: 200px;
-  font-family: monospace;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -81,7 +81,7 @@
 
 .image-headers{
   font-size: 20px;
-  font-family: monospace;
+  font-family: Arial, Helvetica, sans-serif;
   margin-left: 110px;
 }
 
@@ -93,7 +93,7 @@
   background-color: white;
   color: black;
   text-align: left;
-  font-family: monospace;
+  font-family: Arial, Helvetica, sans-serif;
   padding-left: 30px;
   margin-left: 200px;
 }
@@ -199,9 +199,9 @@ display: none !important;
         <h1 class="display-4" style="background-color: white;">Welcome to OmnilogDB!</h1>
         <p class="lead">A database for bacterial phenotypes.</p>
         <hr class="my-4">
-        <a class = "lead" href="{{url_for('straindata')}}" style="float:left">About</a>
+        <a class = "lead" href="{{url_for('about')}}" style="float:left">About</a>
         <a class = "lead" href="{{url_for('straindata')}}" style="float:left;margin-left: 35px">Search</a>
-        <a class = "lead" style="float:left;margin-left: 35px;"> Contact</a>
+
       </div>
 
 
