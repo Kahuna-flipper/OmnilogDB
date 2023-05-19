@@ -22,7 +22,7 @@ from flask import request
 import pandas as pd
 import scripts
 
-
+import random
 
 
 
@@ -89,11 +89,17 @@ def dashboard():
     return render_template('index.html')
 
 
+@app.route('/about')
+def about():
+    control_wells=scripts.get_control_well_dist('pputida')
+    #control_wells = random.sample(control_wells, 100)
+    return render_template('about.html',control_wells = control_wells)
+
+
 @app.route('/species', methods=['GET'])
 def species():
     specie = request.args.get('specie')
     growth_max_resp,growth_max_resp_rate,growth_max_time,growth_max_auc,no_growth_max_resp,no_growth_max_resp_rate,no_growth_max_time,no_growth_max_auc,uncertain_growth_max_resp = scripts.get_control_well_distribution(specie)
-    import random
     growth_max_resp=random.sample(growth_max_resp, 1000)
     no_growth_max_resp=random.sample(no_growth_max_resp, 1000)
     #uncertain_growth_max_resp = random.sample(uncertain_growth_max_resp,1000)
