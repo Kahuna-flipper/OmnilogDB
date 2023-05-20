@@ -1,24 +1,5 @@
 from flask import Flask, render_template, url_for, jsonify
 from flask import request
-''' CONNECTING TO DATABASES '''
-# MYSQL - for metadata
-#from ex_config import SQLALCHEMY_DATABASE_URI, MONGO_CNX
-#from sqlalchemy import create_engine
-#engine = create_engine(SQLALCHEMY_DATABASE_URI)
-#from sqlalchemy.orm import sessionmaker
-#Session = sessionmaker(bind=engine)
-#session = Session()
-
-# Mongo for growth data
-#import pymongo
-# Making a Connection with MongoClient
-#myclient = pymongo.MongoClient(MONGO_CNX['client'])
-# database
-#mydb = myclient[MONGO_CNX['db']]
-# collection
-#mongo_table= mydb[MONGO_CNX['collection']]
-#data = mongo_table.find()
-#from phenom_db import *
 import pandas as pd
 import scripts
 
@@ -95,6 +76,40 @@ def about():
     #control_wells = random.sample(control_wells, 100)
     return render_template('about.html',control_wells = control_wells)
 
+@app.route('/plates')
+def plates():
+
+    return render_template('plates.html')
+
+
+
+@app.route('/plate_descriptions/json', methods=['GET'])
+def plate_descriptions_json():
+    strain = request.args.get('strain')
+    plate_desc = pd.read_csv('./static/'+'plate_desc/platedesc.csv')
+
+    out2 = []
+
+    for i in plate_desc.index:
+        plate = plate_desc.loc[i,'Plate']
+        well = plate_desc.loc[i,'Well']
+        compound = plate_desc.loc[i,'Compound']
+        description = plate_desc.loc[i,'Description']
+        kegg_id = plate_desc.loc[i,'KEGG ID']
+        cas_id = plate_desc.loc[i,'CAS ID']
+
+        out2.append([
+            #str(plateid),
+            str(plate),
+            str(well),
+            str(compound),
+            str(description),
+            str(kegg_id),
+            str(cas_id)])
+
+
+    #return jsonify(data=out)
+    return jsonify(data=out2)
 
 @app.route('/species', methods=['GET'])
 def species():
