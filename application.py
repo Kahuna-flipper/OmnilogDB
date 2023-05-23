@@ -81,7 +81,17 @@ def plates():
 
     return render_template('plates.html')
 
+@app.route('/ticket' ,methods=['GET', 'POST'])
+def ticket():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        
+        scripts.send_email(name, email, message)
 
+        return 'Message sent successfully!'
+    return render_template('ticket.html')
 
 @app.route('/plate_descriptions/json', methods=['GET'])
 def plate_descriptions_json():
