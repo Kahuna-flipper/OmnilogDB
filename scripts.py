@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from flask import Flask, render_template, url_for, jsonify
 from flask import request
 
+import smtplib
+from email.message import EmailMessage
+
 species = ['ecoli','pputida','saureus']
 
 def strain_summary():
@@ -210,3 +213,23 @@ def get_control_well_dist(specie):
             control_data.append(control_wells.iloc[well,5])
 
     return control_data
+
+
+
+def send_email(name, email, message):
+    msg = EmailMessage()
+    msg.set_content(f'Name: {name}\nEmail: {email}\n\n{message}')
+    msg['Subject'] = 'Contact Form Submission'
+    msg['From'] = ''  # Replace with your own email address
+    msg['To'] = ''  # Replace with your own email address
+
+    # SMTP setup
+    smtp_server = 'smtp.gmail.com'  # Replace with your SMTP server address
+    smtp_port = 587  # Replace with your SMTP server port
+    smtp_username = ''  # Replace with your SMTP server username
+    smtp_password = ''  # Replace with your SMTP server password
+
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.send_message(msg)
