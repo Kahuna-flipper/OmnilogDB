@@ -93,6 +93,21 @@ def ticket():
         return 'Message sent successfully!'
     return render_template('ticket.html')
 
+
+@app.route('/explore',methods=['GET', 'POST'])
+def explore():
+
+    if request.method == 'POST':
+        chosen_option = request.form.get('option')
+        message = request.form.get('message')
+        selected_entries = request.form.getlist('entry[]')
+        scripts.process_entries(selected_entries)
+        return 'Selected entries processed successfully!'
+    
+    options = scripts.get_all_compounds_in_all_wells()
+    entries = scripts.combine_specie_summaries()
+    return render_template('explore.html',entries=entries,options=options)
+
 @app.route('/plate_descriptions/json', methods=['GET'])
 def plate_descriptions_json():
     strain = request.args.get('strain')
