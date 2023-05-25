@@ -233,3 +233,45 @@ def send_email(name, email, message):
         server.starttls()
         server.login(smtp_username, smtp_password)
         server.send_message(msg)
+
+
+def process_entries(selected_entries):
+    for entry in selected_entries:
+        # Process each selected entry as needed
+        print(f'Selected entry: {entry}')
+        # Send email, perform database operations, etc.
+
+
+def combine_specie_summaries():
+    summary= pd.DataFrame()
+    for specie in species:
+        temp_dataframe = pd.DataFrame()
+        strains = []
+        strain_id = []
+        mods = []
+        temp_summary = pd.read_csv('static/'+specie+'/metadata/summary.csv',index_col='PlateIDs')
+        for i in range(0,temp_summary.shape[0]):
+            strains.append(temp_summary.iloc[i,1]+'___'+temp_summary.iloc[i,2])
+        strains = list(set(strains))
+
+        for strain in strains:
+            strain_id.append(strain.split('___')[0])
+            mods.append(strain.split('___')[1])
+        
+        temp_dataframe['Strain ID'] = strain_id
+        temp_dataframe['Modification'] = mods
+        summary = pd.concat([summary,temp_dataframe])
+    return summary.to_dict('records')
+
+
+
+def get_all_compounds_in_all_wells():
+    platedesc = pd.read_csv('static/plate_desc/platedesc.csv')
+    compounds = []
+
+    for i in range(0,platedesc.shape[0]):
+        compounds.append(platedesc.iloc[i,2]+', '+platedesc.iloc[i,3])
+    
+    compounds = list(set(compounds))
+
+    return compounds
