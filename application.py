@@ -98,11 +98,14 @@ def ticket():
 def explore():
 
     if request.method == 'POST':
-        chosen_option = request.form.get('option')
-        message = request.form.get('message')
-        selected_entries = request.form.getlist('entry[]')
-        scripts.process_entries(selected_entries)
-        return 'Selected entries processed successfully!'
+        selected_entries = request.form.getlist('selected_entries')
+        chosen_option = request.form.get('selected_option')
+        #scripts.process_entries(selected_entries)
+
+        print(f'Selected entries: {selected_entries}')
+        print(f'Chosen option: {chosen_option}')
+
+        return chosen_option
     
     options = scripts.get_all_compounds_in_all_wells()
     entries = scripts.combine_specie_summaries()
