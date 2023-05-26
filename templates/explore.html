@@ -44,14 +44,16 @@
             <tbody>
                 {% for entry in entries %}
                 <tr>
-                    <td><input type="checkbox" name="entry[]" value="{{ entry['ID'] }}"></td>
+                    <td><input type="checkbox" name="entry[]" value="{{ entry['Strain ID'], entry['Modification'] }}"></td>
                     <td>{{ entry['Strain ID'] }}</td>
                     <td>{{ entry['Modification'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <input type="hidden" id="selectedEntries" name="selected_entries">
+        <input type="hidden" id="selectedOption" name="selected_option">
+        <button type="submit" class="btn btn-primary" onclick="prepareData()">Submit</button>
     </form>
 </div>
 
@@ -71,9 +73,22 @@
     });
 </script>
 
+<script>
+    function prepareData() {
+            var selectedEntries = [];
+            $("input[name='entry[]']:checked").each(function() {
+                selectedEntries.push($(this).val());
+            });
+            $("#selectedEntries").val(selectedEntries);
+            var selectedOption = $("#dropdown").val();
+            $("#selectedOption").val(selectedOption);
+        }
 
-    <script>
-        $(document).ready(function() {
+</script>
+
+
+<script>
+    $(document).ready(function() {
             $('.select2').select2();
         });
     </script>
