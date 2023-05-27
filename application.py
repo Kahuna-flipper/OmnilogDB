@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, jsonify
 from flask import request
 import pandas as pd
 import scripts
-
+import json
 import random
 
 
@@ -70,7 +70,7 @@ def dashboard():
     return render_template('index.html')
 
 
-@app.route('/about')
+@app.route('/about',methods=['GET', 'POST'])
 def about():
     control_wells=scripts.get_control_well_dist('pputida')
     #control_wells = random.sample(control_wells, 100)
@@ -98,14 +98,15 @@ def ticket():
 def explore():
 
     if request.method == 'POST':
-        selected_entries = request.form.getlist('selected_entries')
+        selected_entries = request.form.getlist('selected_entries[]')
         chosen_option = request.form.get('selected_option')
-        #scripts.process_entries(selected_entries)
 
-        print(f'Selected entries: {selected_entries}')
-        print(f'Chosen option: {chosen_option}')
+        plate,well = scripts.get_plate_well_from_compound(chosen_option)
+        plateids = scripts.get_plateid_from_strain(selected_entries,plate)
 
-        return chosen_option
+        print(plateids)
+
+
     
     options = scripts.get_all_compounds_in_all_wells()
     entries = scripts.combine_specie_summaries()
