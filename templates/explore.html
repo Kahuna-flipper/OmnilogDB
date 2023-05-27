@@ -32,7 +32,7 @@
         <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
     </form>
 
-    <form method="POST" action="/explore">
+    <form method="POST" action="/explore" id="contactForm">
         <table class="table" id="entriesTable">
             <thead>
                 <tr>
@@ -44,7 +44,7 @@
             <tbody>
                 {% for entry in entries %}
                 <tr>
-                    <td><input type="checkbox" name="entry[]" value="{{ entry['Strain ID'], entry['Modification'] }}"></td>
+                    <td><input type="checkbox"  class="checkbox" name="entry" value="1" data-id="{{ entry['Strain ID'] }}" data-name="{{ entry['Modification'] }}"></td>
                     <td>{{ entry['Strain ID'] }}</td>
                     <td>{{ entry['Modification'] }}</td>
                 </tr>
@@ -75,14 +75,31 @@
 
 <script>
     function prepareData() {
-            var selectedEntries = [];
-            $("input[name='entry[]']:checked").each(function() {
-                selectedEntries.push($(this).val());
-            });
-            $("#selectedEntries").val(selectedEntries);
+
+        var form = document.getElementById("contactForm");
+        var checkboxes = document.querySelectorAll(".checkbox:checked");
+
+        checkboxes.forEach(function(checkbox) {
+                var entryId = checkbox.getAttribute('data-id');
+                var entryName = checkbox.getAttribute('data-name');
+
+                var input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'selected_entries[]');
+                input.setAttribute('value', entryId);
+
+                var input2 = document.createElement('input');
+                input2.setAttribute('type', 'hidden');
+                input2.setAttribute('name', 'selected_entries[]');
+                input2.setAttribute('value', entryName);
+
+                form.appendChild(input);
+                form.appendChild(input2);
+            })
             var selectedOption = $("#dropdown").val();
             $("#selectedOption").val(selectedOption);
         }
+
 
 </script>
 
