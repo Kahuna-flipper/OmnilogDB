@@ -275,3 +275,41 @@ def get_all_compounds_in_all_wells():
     compounds = list(set(compounds))
 
     return compounds
+
+
+
+def get_plate_well_from_compound(compound):
+    platedesc = pd.read_csv('static/plate_desc/platedesc.csv')
+
+    for i in range(platedesc.shape[0]):
+        combined_comp = platedesc['Compound'][i]+', '+platedesc['Description'][i]
+        if(compound==combined_comp):
+            plate = platedesc['Plate'][i]
+            well = platedesc['Well'][i]
+        
+    return plate,well
+
+
+def get_plateid_from_strain(strain_list,plate):
+    
+    combined_summary = pd.DataFrame()
+    combined_list = []
+    plateids = []
+
+    for specie in species:
+        temp_summary = pd.read_csv('static/'+specie+'/metadata/summary.csv',index_col='PlateIDs')
+        combined_summary = pd.concat([combined_summary,temp_summary])
+
+    for i in range(0,len(strain_list),2):
+        combined_list.append(strain_list[i]+strain_list[i+1])
+    
+    for strain in combined_list:
+        for i in range(0,combined_summary.shape[0]):
+            strain_mod = combined_summary['Strain'][i]+ combined_summary['Modification/Metadata'][i]
+            if(strain_mod==strain and combined_summary['Plate'][i]==plate):
+                plateids.append(combined_summary.index[i])
+
+    return plateids
+    
+
+    
