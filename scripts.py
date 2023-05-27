@@ -293,7 +293,6 @@ def get_plate_well_from_compound(compound):
 def get_plateid_from_strain(strain_list,plate):
     
     combined_summary = pd.DataFrame()
-    combined_list = []
     plateids = []
 
     for specie in species:
@@ -301,13 +300,16 @@ def get_plateid_from_strain(strain_list,plate):
         combined_summary = pd.concat([combined_summary,temp_summary])
 
     for i in range(0,len(strain_list),2):
-        combined_list.append(strain_list[i]+strain_list[i+1])
+        strain = combined_summary[combined_summary['Strain']==strain_list[i]]
+        metadata = strain[strain['Modification/Metadata']==strain_list[i+1]]
+        plates = metadata['Plate'].tolist()
+
+        if(plate in plates):
+            plateids.append((metadata[metadata['Plate']==plate]).index.tolist().pop(0))
+        
+        else:
+            plateids.append('N.A')
     
-    for strain in combined_list:
-        for i in range(0,combined_summary.shape[0]):
-            strain_mod = combined_summary['Strain'][i]+ combined_summary['Modification/Metadata'][i]
-            if(strain_mod==strain and combined_summary['Plate'][i]==plate):
-                plateids.append(combined_summary.index[i])
 
     return plateids
     
