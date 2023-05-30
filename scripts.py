@@ -314,4 +314,11 @@ def get_plateid_from_strain(strain_list,plate):
     return plateids
     
 
-    
+def get_growth_calls_from_plateids(plateids,well):
+    combined_growth = pd.DataFrame()
+
+    for specie in species:
+        temp_growth = pd.read_csv('static/'+specie+'/data/growth_summary.csv',index_col='PlateIDs')
+        combined_summary = pd.concat([combined_summary,temp_growth])
+
+    return combined_summary
