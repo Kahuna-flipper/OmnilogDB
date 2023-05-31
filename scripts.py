@@ -316,9 +316,25 @@ def get_plateid_from_strain(strain_list,plate):
 
 def get_growth_calls_from_plateids(plateids,well):
     combined_growth = pd.DataFrame()
-
+    growth_calls = []
     for specie in species:
         temp_growth = pd.read_csv('static/'+specie+'/data/growth_summary.csv',index_col='PlateIDs')
-        combined_summary = pd.concat([combined_summary,temp_growth])
+        combined_growth = pd.concat([combined_growth,temp_growth])
+    
+    i = 0
+    for id in plateids:
+        if(id=='N.A'):
+            growth_calls.append([i,0,0.75])
+        else:
+            growth = combined_growth.loc[id]
+            growth_calls.append([i,0,growth[growth['Well']==well]['Growth(1)/No Growth(0)/NA(0.5)'].tolist().pop()])
+        i = i+1
 
-    return combined_summary
+    return growth_calls
+
+
+def get_strain_names(strainlist):
+    strain_names = []
+    for i in range(0,len(strainlist),2):
+        strain_names.append(strainlist[i]+'__'+strainlist[i+1])
+    return strain_names
