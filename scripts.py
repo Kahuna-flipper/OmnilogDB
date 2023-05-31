@@ -314,12 +314,17 @@ def get_plateid_from_strain(strain_list,plate):
     return plateids
     
 
-def get_growth_calls_from_plateids(plateids,well):
+def get_growth_calls_from_plateids(plateids,well,xlabels):
     combined_growth = pd.DataFrame()
+    combined_signals = pd.DataFrame()
     growth_calls = []
+    series = []
+
     for specie in species:
         temp_growth = pd.read_csv('static/'+specie+'/data/growth_summary.csv',index_col='PlateIDs')
+        temp_signal = pd.read_csv('static/'+specie+'/data/plate_summary.csv',index_col='PlateIDs')
         combined_growth = pd.concat([combined_growth,temp_growth])
+        combined_signals = pd.concat([combined_signals,temp_signal])
     
     i = 0
     for id in plateids:
@@ -330,7 +335,26 @@ def get_growth_calls_from_plateids(plateids,well):
             growth_calls.append([i,0,growth[growth['Well']==well]['Growth(1)/No Growth(0)/NA(0.5)'].tolist().pop()])
         i = i+1
 
-    return growth_calls
+    j = 0
+    for id in plateids:
+        if(id=='N.A'):
+            continue
+        else:
+            signals = combined_signals.loc[id]
+            signals = signals[signals['Well']==well]
+            for i in range(0,signals.shape[0]):
+                if(i>=2):
+                    break
+                series.append({'name':xlabels[j]+' R'+str(i+1),'data':signals.iloc[i,7:].tolist()})
+
+        j = j+1
+
+    time = list(np.linspace(0,48,193))
+
+    return growth_calls,series,time
+
+    
+
 
 
 def get_strain_names(strainlist):
