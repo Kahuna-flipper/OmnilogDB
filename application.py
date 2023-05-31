@@ -103,18 +103,17 @@ def explore():
         selected_entries = request.form.getlist('selected_entries[]')
         plate,well = scripts.get_plate_well_from_compound(chosen_option)
         plateids = scripts.get_plateid_from_strain(selected_entries,plate)
-        growth_calls = scripts.get_growth_calls_from_plateids(plateids,well)
 
         xlabels = scripts.get_strain_names(selected_entries)
         ylabels = [chosen_option]
-
+        growth_calls,series,time = scripts.get_growth_calls_from_plateids(plateids,well,xlabels)
         # options = scripts.get_all_compounds_in_all_wells()
         # entries = scripts.combine_specie_summaries()
 
         #print(selected_entries)
         # print(growth_calls)
 
-        return render_template('comparative_analysis.html',growth_calls=growth_calls,xlabels=xlabels,ylabels=ylabels)
+        return render_template('comparative_analysis.html',growth_calls=growth_calls,xlabels=xlabels,ylabels=ylabels,series=series,time=time)
     
     options = scripts.get_all_compounds_in_all_wells()
     entries = scripts.combine_specie_summaries()
