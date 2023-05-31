@@ -98,15 +98,23 @@ def ticket():
 def explore():
 
     if request.method == 'POST':
-        selected_entries = request.form.getlist('selected_entries[]')
+        # selected_entries = request.form.getlist('selected_entries')
         chosen_option = request.form.get('selected_option')
-
+        selected_entries = request.form.getlist('selected_entries[]')
         plate,well = scripts.get_plate_well_from_compound(chosen_option)
         plateids = scripts.get_plateid_from_strain(selected_entries,plate)
+        growth_calls = scripts.get_growth_calls_from_plateids(plateids,well)
 
-        print(plateids)
+        xlabels = scripts.get_strain_names(selected_entries)
+        ylabels = [chosen_option]
 
+        # options = scripts.get_all_compounds_in_all_wells()
+        # entries = scripts.combine_specie_summaries()
 
+        #print(selected_entries)
+        # print(growth_calls)
+
+        return render_template('comparative_analysis.html',growth_calls=growth_calls,xlabels=xlabels,ylabels=ylabels)
     
     options = scripts.get_all_compounds_in_all_wells()
     entries = scripts.combine_specie_summaries()
