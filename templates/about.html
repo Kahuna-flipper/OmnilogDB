@@ -58,6 +58,21 @@
     .highcharts-credits {
         display: none !important;
     }
+
+    /* Hide the contextButton (export menu button) */
+.highcharts-contextbutton {
+  display: none;
+}
+
+/* Hide the exportButton (export to PNG/SVG/CSV/XLS button) */
+.highcharts-exporting-group {
+  display: none;
+}
+
+/* Hide the printButton (print chart button) */
+.highcharts-button-symbol.highcharts-print-button {
+  display: none;
+}
 </style>
 
 {% endblock %}
@@ -73,7 +88,7 @@
 The database reports phenotypes for various strain types and modifications based on a 4 step workflow of 1) Curation, 2) Quality Check, 3) Parameter extraction and 4) Growth calls. These phenotypes can be leveraged to A) Curate,
 gapfill and validate genome scale metabolic models, B) Look for interesting nutritional sources for generation of unique media conditions, C) Gaining phenotypic insights into the pangenome of a specie etc.</p>
 
-<p class="text">OmnilogDB is free for non-commerical use and is hosted and maintained at the Systems Biology Research Group at the University of California San Diego. Pls contact the developers at kkrishnan@ucsd.edu for any questions or issues.</p>
+<p class="text">OmnilogDB is free for non-commerical use and is hosted and maintained at the Systems Biology Research Group at the University of California San Diego. Pls contact the developers at kkrishnan@ucsd.edu or use the 'Raise a ticket' option for any questions or issues.</p>
 
 
 <h5 style="margin-left: 250px;margin-top: 20px;margin-right: 500px;">Data Submission</h3>
