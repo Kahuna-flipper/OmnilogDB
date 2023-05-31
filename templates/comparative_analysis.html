@@ -7,6 +7,7 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
 
 
 <style>
@@ -57,6 +58,21 @@
 display: none !important;
 }
 
+/* Hide the contextButton (export menu button) */
+.highcharts-contextbutton {
+  display: none;
+}
+
+/* Hide the exportButton (export to PNG/SVG/CSV/XLS button) */
+.highcharts-exporting-group {
+  display: none;
+}
+
+/* Hide the printButton (print chart button) */
+.highcharts-button-symbol.highcharts-print-button {
+  display: none;
+}
+
 </style>
 
 {% endblock %}
@@ -65,23 +81,26 @@ display: none !important;
 
 
 
-<div style="width:50px;margin-left: 650px;margin-top:30px;height:50px;float: left;background: #f2b6ee;border:2px solid #000;"></div>
+<div style="width:50px;margin-left: 690px;margin-top:30px;height:50px;float: left;background: #f2b6ee;border:2px solid #000;"></div>
 <div style="width:50px;margin-left: 100px;;margin-top:30px;height:50px;float: left;background: #FFFFFF;border:2px solid #000;"></div>
 <div style="width:50px;margin-left: 100px;;margin-top:30px;height:50px;float: left;background: #b6daf2;border:2px solid #000;"></div>
 <div style="width:50px;margin-left: 100px;;margin-top:30px;height:50px;float: left;background: #c4f2b6;border:2px solid #000;"></div>
-<div style="margin-top:120px;margin-left: 650px;height:10px;position: sticky;">Growth</div>
-<div style="margin-left:790px;height:10px;position: sticky;margin-top: -10px;">No Growth</div>
-<div style="margin-left: 940px;height:10px;margin-top: -10px">Uncertain</div>
-<div style="margin-left: 1110px;height:10px;margin-top: -10px">N.A</div>
+<div style="margin-top:120px;margin-left: 690px;height:10px;position: sticky;">Growth</div>
+<div style="margin-left:830px;height:10px;position: sticky;margin-top: -10px;">No Growth</div>
+<div style="margin-left: 980px;height:10px;margin-top: -10px">Uncertain</div>
+<div style="margin-left: 1150px;height:10px;margin-top: -10px">N.A</div>
 
 
-<div id="chartContainer" class="chart" style="height: 200px; width: 800px;margin-top: 60px;margin-left: 400px;"></div>
+<div id="chartContainer" class="chart" style="height: 200px; width: 1200px;margin-top: 60px;margin-left: 300px;"></div>
+<div id="chartContainer2" class="chart" style="height: 500px; width: 1200px;margin-top: 60px;margin-left: 330px;"></div>
 
 
 <script>
     var growth_calls = {{ growth_calls|safe}}
     var xlabels = {{ xlabels|safe}}
     var ylabels = {{ ylabels|safe}}
+    var series = {{ series|safe}}
+    var time = {{ time|safe}}
 </script>
 
 {% endblock %}
@@ -139,8 +158,8 @@ Highcharts.chart('chartContainer', {
     colorAxis: {
 
         dataClasses: [
-            { from: 0, to: 0.5, color: '#FFFFFF' },  // Color for values between 0 and 25
-            { from:0.5, to: 0.75, color: '#b6daf2' },  // Color for values between 25 and 50
+            { from: 0, to: 0.5, color: '#FFFFFF' },  // Color for values between 0 and 0.5
+            { from:0.5, to: 0.75, color: '#b6daf2' },  // Color for values between 0.5 and 0.75
             { from: 0.75, to: 1, color: '#c4f2b6' },  // Color for values between 50 and 75
             { from: 1, color: '#f2b6ee' }  // Color for values greater than or equal to 75
         ],
@@ -153,7 +172,7 @@ Highcharts.chart('chartContainer', {
     },
 
     legend: {
-        align: 'right',
+        align: 'center',
         layout: 'vertical',
         margin: 0,
         verticalAlign: 'top',
@@ -212,6 +231,61 @@ Highcharts.chart('chartContainer', {
     }
 
 });
+</script>
+
+
+<script>
+Highcharts.chart('chartContainer2', {
+
+
+title: {
+        text: 'Growth on '+'{{ylabels[0]}}',
+        align: 'center'
+        },
+
+yAxis: {
+        title: {
+        text: 'Fluoroscence signal'
+        },
+        min:0,
+        max:500
+        },
+                                        
+xAxis:{categories:time,title:{text:'Time (hrs)'}},
+
+// legend: {
+//     layout: 'vertical',
+//     align: 'center',
+//     verticalAlign: 'middle'
+// },
+
+// plotOptions: {
+//     series: {
+//         label: {
+//             connectorAllowed: false
+//         },
+//     }
+// },
+
+series: series,
+
+responsive: {
+    rules: [{
+        condition: {
+            maxWidth: 500
+        },
+        chartOptions: {
+            legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom'
+            }
+        }
+    }]
+}
+
+});
+
 </script>
 
 {% endblock %}
