@@ -90,6 +90,22 @@
 .highcharts-credits {
 display: none !important;
 }
+
+
+/* Hide the contextButton (export menu button) */
+.highcharts-contextbutton {
+  display: none;
+}
+
+/* Hide the exportButton (export to PNG/SVG/CSV/XLS button) */
+.highcharts-exporting-group {
+  display: none;
+}
+
+/* Hide the printButton (print chart button) */
+.highcharts-button-symbol.highcharts-print-button {
+  display: none;
+}
 </style>
 
 {% endblock %}
@@ -224,11 +240,16 @@ Highcharts.chart('container',{
                 }
             },
         colorAxis: {
-                min: 0,
-                stops:[[0,'#FFFFFF'],[0.5,'#b6daf2'],[1,'#f2b6ee']],
-                minColor: '#FFFFFF',
-                maxColor : '#f2b6ee',
+                // min: 0,
+                // stops:[[0,'#FFFFFF'],[0.5,'#b6daf2'],[1,'#f2b6ee']],
+                // minColor: '#FFFFFF',
+                // maxColor : '#f2b6ee',
                 // maxColor: Highcharts.getOptions().colors[0]
+                dataClasses: [
+            { from: 0, to: 0.5, color: '#FFFFFF' },  // Color for values between 0 and 0.5
+            { from:0.5, to: 1, color: '#b6daf2' },  // Color for values between 0.5 and 1
+            { from: 1, color: '#f2b6ee' }  // Color for values greater than or equal to 1
+        ],
                 showInLegend:false,
 
             },
