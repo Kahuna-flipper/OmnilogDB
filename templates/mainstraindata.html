@@ -286,7 +286,8 @@ Highcharts.chart('container',{
                                 well_id = "0"+well_id
                             }
                             var well = well_char+well_id;
-                            table.search(well).draw();
+                            var compound = compound_dict[well];
+                            table.search(compound).draw();
 
                         
                             // Send AJAX request to FLASK backend
