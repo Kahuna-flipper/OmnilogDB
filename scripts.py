@@ -117,7 +117,8 @@ def get_kinetic_parameters(plateid,strain):
             str(auc),
             str(z),
             str(growth),
-            str(kegg),
+            # str(kegg),
+            "<a href=https://www.genome.jp/entry/"+str(kegg)+">"+str(kegg)+"</a>",
             str(cas)])
 
 
