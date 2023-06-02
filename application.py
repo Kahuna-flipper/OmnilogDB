@@ -72,9 +72,9 @@ def dashboard():
 
 @app.route('/about',methods=['GET', 'POST'])
 def about():
-    control_wells=scripts.get_control_well_dist('pputida')
+    control_wells,growth_wells=scripts.get_control_well_dist('pputida')
     #control_wells = random.sample(control_wells, 100)
-    return render_template('about.html',control_wells = control_wells)
+    return render_template('about.html',control_wells = control_wells,growth_wells=growth_wells)
 
 @app.route('/plates')
 def plates():
@@ -105,6 +105,7 @@ def explore():
         plateids = scripts.get_plateid_from_strain(selected_entries,plate)
 
         xlabels = scripts.get_strain_names(selected_entries)
+        print(xlabels)
         ylabels = [chosen_option]
         growth_calls,series,time = scripts.get_growth_calls_from_plateids(plateids,well,xlabels)
         # options = scripts.get_all_compounds_in_all_wells()
