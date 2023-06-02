@@ -141,7 +141,8 @@ def plate_descriptions_json():
             str(well),
             str(compound),
             str(description),
-            str(kegg_id),
+            # str(kegg_id),
+            "<a href=https://www.genome.jp/entry/"+str(kegg_id)+">"+str(kegg_id)+"</a>",
             str(cas_id)])
 
 
