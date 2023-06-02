@@ -123,8 +123,10 @@ gapfill and validate genome scale metabolic models, B) Look for interesting nutr
 
 <script>
     var data = {{ control_wells|safe}};
-
-Highcharts.chart('container', {
+    var data2 = {{ growth_wells|safe}};
+    // Calculate the cutoff value
+    var cutoffValue = 50;
+    var chart = Highcharts.chart('container', {
     title: {
         text: ''
     },
@@ -156,7 +158,7 @@ Highcharts.chart('container', {
     },
 
     series: [{
-        name: 'Number of control wells in a bin',
+        name: 'Max Respiration in control wells',
         type: 'histogram',
         xAxis: 1,
         yAxis: 1,
@@ -175,9 +177,49 @@ Highcharts.chart('container', {
         marker: {
             radius: 0.00001
         }
-    }]
+    },
+    {
+        name: 'Max Respiration in growth wells',
+        type: 'histogram',
+        xAxis: 1,
+        yAxis: 1,
+        baseSeries: 's2',
+        marker: {
+            radius: 0.00001
+        },
+        color:'lightgreen',
+        // zIndex: -1
+    }, {
+        name: '',
+        type: 'scatter',
+        visible: false,
+        data: data2,
+        id: 's2',
+        marker: {
+            radius: 0.00001
+        }
+}]
+});
+
+// // Add a column series for the histogram data
+// chart.addSeries({
+//     type: 'column',
+//     name: 'Histogram',
+//     data: [/* histogram data */]
+// });
+
+// Add a line series for the vertical line
+chart.addSeries({
+    type: 'scatter',
+    name: 'Growth/No Growth threshold',
+    // data: [[cutoffValue, 0], [cutoffValue, chart.yAxis[0].max]],
+    data: [[99,0],[99,29]],
+    color: 'red',
+    lineWidth: 2,
+    xAxis: 1,
+    yAxis: 1,
+    
+
 });
 </script>
-
-
 {%endblock%}
