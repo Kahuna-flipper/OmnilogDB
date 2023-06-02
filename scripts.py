@@ -206,13 +206,16 @@ def get_control_well_distribution(specie):
 def get_control_well_dist(specie):
     kinetic_data = pd.read_csv('static/'+specie+'/data/kinetic_summary.csv',index_col='PlateIDs')
     control_wells = kinetic_data.loc[kinetic_data['Well']=='A01']
+    growth_wells = kinetic_data.loc[kinetic_data['Growth(1)/No Growth(0)']==1]
     control_data = []
+    growth_data = []
     for well in range(0,control_wells.shape[0]):
         plate = control_wells.iloc[well,0]
         if('PM01' in plate or 'PM02' in plate or 'PM03' in plate or 'PM04' in plate or 'PM05' in plate or 'PM06' in plate or 'PM07' in plate or 'PM08' in plate):
             control_data.append(control_wells.iloc[well,5])
+            growth_data.append(growth_wells.iloc[well,5])
 
-    return control_data
+    return control_data,growth_data
 
 
 
@@ -249,6 +252,7 @@ def combine_specie_summaries():
         strains = []
         strain_id = []
         mods = []
+        sps = []
         temp_summary = pd.read_csv('static/'+specie+'/metadata/summary.csv',index_col='PlateIDs')
         for i in range(0,temp_summary.shape[0]):
             strains.append(temp_summary.iloc[i,1]+'___'+temp_summary.iloc[i,2])
@@ -257,9 +261,11 @@ def combine_specie_summaries():
         for strain in strains:
             strain_id.append(strain.split('___')[0])
             mods.append(strain.split('___')[1])
+            sps.append(temp_summary['Specie'].tolist().pop(0))
         
         temp_dataframe['Strain ID'] = strain_id
         temp_dataframe['Modification'] = mods
+        temp_dataframe['Specie'] = sps
         summary = pd.concat([summary,temp_dataframe])
     return summary.to_dict('records')
 
@@ -299,7 +305,7 @@ def get_plateid_from_strain(strain_list,plate):
         temp_summary = pd.read_csv('static/'+specie+'/metadata/summary.csv',index_col='PlateIDs')
         combined_summary = pd.concat([combined_summary,temp_summary])
 
-    for i in range(0,len(strain_list),2):
+    for i in range(0,len(strain_list),3):
         strain = combined_summary[combined_summary['Strain']==strain_list[i]]
         metadata = strain[strain['Modification/Metadata']==strain_list[i+1]]
         plates = metadata['Plate'].tolist()
@@ -338,6 +344,7 @@ def get_growth_calls_from_plateids(plateids,well,xlabels):
     j = 0
     for id in plateids:
         if(id=='N.A'):
+            j = j+1
             continue
         else:
             signals = combined_signals.loc[id]
@@ -359,6 +366,6 @@ def get_growth_calls_from_plateids(plateids,well,xlabels):
 
 def get_strain_names(strainlist):
     strain_names = []
-    for i in range(0,len(strainlist),2):
-        strain_names.append(strainlist[i]+'__'+strainlist[i+1])
+    for i in range(0,len(strainlist),3):
+        strain_names.append(strainlist[i]+'__'+strainlist[i+1]+'__'+strainlist[i+2])
     return strain_names
