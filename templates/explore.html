@@ -39,14 +39,16 @@
                     <th>#</th>
                     <th>Strain</th>
                     <th>Modification</th>
+                    <th>Specie</th>
                 </tr>
             </thead>
             <tbody>
                 {% for entry in entries %}
                 <tr>
-                    <td><input type="checkbox"  class="checkbox" id="{{ entry['Strain ID'] }}+{{ entry['Modification'] }}" name="entry" value="1" data-id="{{ entry['Strain ID'] }}" data-name="{{ entry['Modification'] }}"></td>
+                    <td><input type="checkbox"  class="checkbox" id="{{ entry['Strain ID'] }}+{{ entry['Modification'] }}" name="entry" value="1" data-id="{{ entry['Strain ID'] }}" data-name="{{ entry['Modification'] }}" data-specie="{{ entry['Specie'] }}"></td>
                     <td>{{ entry['Strain ID'] }}</td>
                     <td>{{ entry['Modification'] }}</td>
+                    <td>{{ entry['Specie'] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -89,6 +91,7 @@
         checkboxes.forEach(function(checkbox) {
                 var entryId = checkbox.getAttribute('data-id');
                 var entryName = checkbox.getAttribute('data-name');
+                var entryspecie = checkbox.getAttribute('data-specie');
 
                 var input = document.createElement('input');
                 input.setAttribute('type', 'hidden');
@@ -100,8 +103,14 @@
                 input2.setAttribute('name', 'selected_entries[]');
                 input2.setAttribute('value', entryName);
 
+                var input3 = document.createElement('input');
+                input3.setAttribute('type', 'hidden');
+                input3.setAttribute('name', 'selected_entries[]');
+                input3.setAttribute('value', entryspecie);
+
                 form.appendChild(input);
                 form.appendChild(input2);
+                form.appendChild(input3);
             })
             var selectedOption = $("#dropdown").val();
             $("#selectedOption").val(selectedOption);
